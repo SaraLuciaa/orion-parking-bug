@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>psbooking</name>
+    <displayName><![CDATA[Booking and reservation system]]></displayName>
+    <version><![CDATA[6.0.3]]></version>
+    <description><![CDATA[Online booking and reservation system]]></description>
+    <author><![CDATA[Webkul]]></author>
+    <tab><![CDATA[front_office_features]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+</module>

@@ -1,0 +1,74 @@
+/**
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License version 3.0
+* that is bundled with this package in the file LICENSE.txt
+* It is also available through the world-wide-web at this URL:
+* https://opensource.org/licenses/AFL-3.0
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade this module to a newer
+* versions in the future. If you wish to customize this module for your
+* needs please refer to CustomizationPolicy.txt file inside our module for more information.
+*
+* @author Webkul IN
+* @copyright Since 2010 Webkul
+* @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+*/
+
+.wk-text-center {
+    text-align: center;
+}
+
+.wk_search_div {
+    text-align: center;
+    margin-top: 1rem;
+    margin-top: 27px;
+    width: auto;
+}
+
+#wrapper_header {
+    border: 1px solid #eee;
+    padding: 15px !important;
+    box-shadow: 2px 2px 8px 0rgba(0, 0, 0, .2);
+    background: #fff;
+    margin-bottom: 15px;
+
+}
+
+.wk-availability-heading {
+    font-size: 16px;
+    font-weight: Bold;
+    margin-bottom: 10px;
+}
+
+.wk_search_row {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+#wrapper_header_right {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    font-size: 14px;
+}
+
+#wrapper_header_right .form-control {
+    border-radius: 5px;
+}
+
+#wrapper_header_right .wk_btn_extra {
+    border-radius: 5px;
+}
+
+input.datepicker-input {
+    background-image: url("../../views/img/icon/icon-calendar.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: 96% 50% !important;
+}
+
+#ui-datepicker-div{
+    z-index: 44 !important;
+}

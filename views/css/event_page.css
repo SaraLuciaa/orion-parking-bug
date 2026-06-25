@@ -1,0 +1,245 @@
+/**
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License version 3.0
+* that is bundled with this package in the file LICENSE.txt
+* It is also available through the world-wide-web at this URL:
+* https://opensource.org/licenses/AFL-3.0
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade this module to a newer
+* versions in the future. If you wish to customize this module for your
+* needs please refer to CustomizationPolicy.txt file inside our module for more information.
+*
+* @author Webkul IN
+* @copyright Since 2010 Webkul
+* @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+*/
+
+.wk_float_right {
+    float: right;
+}
+
+.booking_loading_img {
+    display: none;
+}
+
+.share_btn {
+    display: flex;
+    line-height: 40px;
+}
+
+.share_btn a {
+    flex-basis: 50px
+}
+
+.wk-white-bckgrnd {
+    background-color: white;
+}
+
+.wk-right-container {
+    padding: 10px;
+    gap: 10px;
+    box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.wk-right-container-sub {
+    font-weight: 600;
+    line-height: 22px;
+    text-transform: capitalize;
+}
+
+.wk-date-time-venue {
+    line-height: 30px;
+    text-transform: capitalize;
+}
+
+.map-div {
+    height: 200px;
+    border: 1px solid #D9D9D9;
+    border-radius: 5px;
+}
+
+#map {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#max_span {
+    border-radius: 3px !important;
+    padding: 1px 8px 2px 8px !important;
+    background-color: #2fb5d2;
+    color: #fff;width: fit-content;
+}
+
+.event_price {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 36px;
+}
+
+.event_info {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    text-transform: capitalize;
+}
+
+.other_event_add {
+    min-height: 18px;
+    margin-top: 5px;
+}
+
+.other_event_time {
+    margin-top: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.other_event_name {
+    font-weight: 600;
+    line-height: 22px;
+    text-transform: capitalize;
+    color: #333333;
+    min-height: 45px
+}
+
+.onwards {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.heading {
+    font-weight: 500;
+}
+
+.related_content_div {
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.related_box {
+    background: #FFFFFF;
+    /* border: 1px solid #EDEDED; */
+    border-radius: 5px;
+}
+
+.wk_text_left {
+    text-align: left;
+}
+
+.booking_total_price {
+    float: left;
+}
+
+#booking_button {
+    white-space: normal;
+}
+
+.wk-direction-btn {
+    border-radius: 2px;
+    font-size: 12px;
+    text-transform: inherit;
+}
+
+.wk-direction-btn:focus {
+    outline:unset !important;
+}
+
+.box-account {
+    width: 100%;
+    background-color: #FFFFFF;
+}
+
+.box-account .box-content {
+    width: 100%;
+    padding: 20px;
+}
+
+.wk-product-slider {
+    display: block;
+    position: relative;
+    width: 100%;
+    margin: auto;
+}
+
+.wk-product-slider ul {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.wk-product-slider li {
+    display: block;
+    border: 1px solid #D6D4D5;
+    height: 430px;
+    /* margin-left: 6px !important;
+    margin-right: 6px !important; */
+    width: 243px !important;
+}
+
+.wk-slider-product-img {
+    float: left;
+    width: 100%;
+    min-height: 75%;
+    /* background-color: #F6F6F6; */
+    text-align: center;
+}
+
+.wk-slider-product-img .img-responsive {
+    margin: 0 auto !important;
+}
+
+.wk-slider-product-info {
+    color: #333333;
+    float: left;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    padding: 5%;
+}
+
+.wk_retail_price {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+#product-slider_block_center .bx-prev {
+    position: absolute;
+    top: 40%;
+    left: 4px;
+    z-index: 999;
+    width: 30px;
+    height: 30px;
+    text-indent: -999999px;
+    background: url(../img/gray_prev.png) no-repeat 0 -30px;
+    display: block;
+    outline: none;
+}
+
+#product-slider_block_center .bx-next {
+    position: absolute;
+    top: 40%;
+    right: 6px;
+    z-index: 999;
+    width: 30px;
+    height: 30px;
+    text-indent: -999999px;
+    background: url(../img/gray_next.png) no-repeat 0 -30px;
+    display: block;
+    outline: none;
+}
+
+#product-slider_block_center .bx-next:hover, #product-slider_block_center .bx-prev:hover {
+    background-position: 0 0;
+}
+
+.box-content .wk-product-out-slider {
+    float: left;
+    width: 32%;
+    margin-right: 15px;
+}

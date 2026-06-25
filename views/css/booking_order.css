@@ -1,0 +1,280 @@
+/**
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License version 3.0
+* that is bundled with this package in the file LICENSE.txt
+* It is also available through the world-wide-web at this URL:
+* https://opensource.org/licenses/AFL-3.0
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade this module to a newer
+* versions in the future. If you wish to customize this module for your
+* needs please refer to CustomizationPolicy.txt file inside our module for more information.
+*
+* @author Webkul IN
+* @copyright Since 2010 Webkul
+* @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+*/
+.customer_search_results_ul, .product_search_results_ul {
+    padding: 0px;
+    background: #ffffff none repeat scroll 0 0;
+    display: block;
+    position: absolute;
+    width: 100%;
+    z-index: 122222;
+    border-bottom: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    max-height: 145px;
+    overflow-y: auto;
+    display: none;
+}
+
+.customer_search_results_ul li, .product_search_results_ul li {
+    width: 100%;
+    background-color: #fff;
+    color: #333333;
+    cursor: pointer;
+    text-align: left;
+    font-size: 12px;
+    list-style: outside none none;
+    padding: 7px;
+}
+
+.customer_search_results_ul li:hover,
+.customer_search_results_ul li:focus,
+.customer_search_results_ul li:active,
+.product_search_results_ul li:hover,
+.product_search_results_ul li:focus,
+.product_search_results_ul li:active {
+    background-color: #379bf0;
+    color: #FFFFFF;
+}
+
+.wk-text-left {
+    text-align: left !important;
+}
+
+.wk-text-right {
+    text-align: right !important;
+}
+
+.booking_product_errors {
+    display: none;
+    padding: 5px 15px;
+}
+
+.booking_loading_img {
+    display: none;
+}
+
+#added_product_div {
+    display: none;
+}
+
+#booking_product_time_slots {
+    margin-left:10%;
+    margin-right:10%;
+}
+
+.address_div, .card_panel {
+    display: none;
+}
+
+.unavailable_slot_err {
+    margin-top: 10px !important;
+    color: red;
+}
+
+#bookings_in_select_range {
+    padding-left: 10%;
+}
+
+.btn-group, .btn-group-vertical {
+    position: relative;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+.btn-group>.btn, .btn-group-vertical>.btn {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.dropdown-toggle, .dropup .dropdown-toggle {
+    padding-right: 0.6285rem;
+}
+
+.btn-outline-primary {
+    color: #25b9d7;
+    border-color: #25b9d7 !important;
+    background-color: transparent;
+}
+
+.dropdown-toggle:not(.dropdown-toggle-split)::after {
+    margin-left: 0.625rem;
+}
+
+.dropdown-toggle::after, .dropup .dropdown-toggle::after {
+    display: inline-block;
+    font-family: "Material Icons", Arial, Verdana, Tahoma, sans-serif;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    vertical-align: middle;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-feature-settings: "liga";
+    font-feature-settings: "liga";
+    content: "expand_more";
+    display: inline-block;
+    width: auto;
+    line-height: 0;
+    vertical-align: middle;
+    border: none;
+    -webkit-transition: 0.15s ease-out;
+    transition: 0.15s ease-out;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.2125rem;
+    vertical-align: 0.2125rem;
+    content: "";
+    border-top: 0.25rem solid;
+    border-right: 0.25rem solid transparent;
+    border-bottom: 0;
+    border-left: 0.25rem solid transparent;
+}
+
+.btn-primary+.dropdown-menu, .btn-outline-primary+.dropdown-menu {
+    border: 1px solid #25b9d7;
+}
+
+.dropdown-menu {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 8.625rem;
+    padding: 1px 0 0;
+    padding-bottom: 1px;
+    margin: 0.125rem -0.1px 0;
+    color: #576c72;
+    border: 1px solid #b3c7cd;
+    -webkit-box-shadow: 1px 1px 2px 0 rgb(0 0 0 / 30%);
+    box-shadow: 1px 1px 2px 0 rgb(0 0 0 / 30%);
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0 0;
+    margin: 0.125rem 0 0;
+    font-size: .875rem;
+    color: #363a41;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #bbcdd2;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 18%);
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 18%);
+}
+
+.dropdown-menu>.dropdown-item {
+    padding: 0.438rem 0.938rem;
+    padding-right: 1rem;
+    line-height: normal;
+    color: inherit;
+    border-bottom: 0;
+}
+
+.dropdown-item:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.3125rem 0.3125rem;
+    clear: both;
+    font-weight: 400;
+    color: #6c868e;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-item:last-child {
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.mt-4 {
+    margin-top: 1.875rem !important;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active, .show>.btn-outline-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #25b9d7;
+    border-color: #25b9d7;
+}
+
+.btn-outline-primary:hover {
+    color: #fff !important;
+    background-color: #7cd5e7;
+    border-color: #7cd5e7;
+}
+
+.btn-primary+.dropdown-menu>.dropdown-item:hover, .btn-outline-primary+.dropdown-menu>.dropdown-item:hover {
+    color: #25b9d7;
+    background-color: rgba(37,185,215,0.1);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #25b9d7;
+    text-decoration: none;
+    background-color: #fff;
+}
+
+.btn-outline-primary:not([disabled]):not(.disabled):active, .btn-outline-primary:not([disabled]):not(.disabled).active, .show>.btn-outline-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #21a6c1;
+    border-color: #21a6c1;
+}
+
+.submitBookingProduct {
+    text-transform: inherit !important;
+}
+
+#booking_button {
+    text-transform: capitalize;
+}
+
+@media (min-width: 544px) {
+.offset-sm-3 {
+    margin-left: 25.50%;
+}
+}
