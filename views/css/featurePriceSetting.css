@@ -1,0 +1,96 @@
+/**
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License version 3.0
+* that is bundled with this package in the file LICENSE.txt
+* It is also available through the world-wide-web at this URL:
+* https://opensource.org/licenses/AFL-3.0
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade this module to a newer
+* versions in the future. If you wish to customize this module for your
+* needs please refer to CustomizationPolicy.txt file inside our module for more information.
+*
+* @author Webkul IN
+* @copyright Since 2010 Webkul
+* @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+*/
+
+
+/* ==== AdminHotelFeaturePricesSettingsController ==== */
+
+.week_days {
+    display: none;
+}
+
+#booking_rate_plans {
+    display: none;
+}
+
+.booking_product_search_results_ul {
+    padding: 0px;
+    background: #ffffff none repeat scroll 0 0;
+    display: block;
+    position: absolute;
+    width: 100%;
+    z-index: 122222;
+    border-bottom: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    max-height: 145px;
+    overflow-y: auto;
+}
+
+.booking_product_search_results_ul li {
+    width: 100%;
+    background-color: #fff;
+    color: #333333;
+    cursor: pointer;
+    text-align: left;
+    font-size: 12px;
+    list-style: outside none none;
+    padding: 7px;
+}
+
+.booking_product_search_results_ul li:hover,
+.booking_product_search_results_ul li:focus,
+.booking_product_search_results_ul li:active {
+    background-color: #379bf0;
+    color: #FFFFFF;
+}
+
+.add_more_time_slot_price {
+    float: right;
+}
+
+.header-rmsearch-input {
+    border-radius: 2px;
+    color: #999999;
+    font-size: 12px;
+    color: #333333;
+    font-style: italic;
+}
+
+.header-rmsearch-input::-webkit-input-placeholder {
+    color: #333333;
+    font-weight: 400;
+}
+
+.header-rmsearch-input:-moz-placeholder {
+    /* Firefox 18- */
+    color: #333333;
+    font-weight: 400;
+}
+
+.header-rmsearch-input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #333333;
+    font-weight: 400;
+}
+
+#wk_booking_product_feature_pricing_form #feature_plan_date_from,
+#wk_booking_product_feature_pricing_form #feature_plan_date_to,
+#wk_booking_product_feature_pricing_form #specific_date {
+    cursor: text;
+}

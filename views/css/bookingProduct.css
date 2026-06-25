@@ -1,0 +1,353 @@
+/**
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License version 3.0
+* that is bundled with this package in the file LICENSE.txt
+* It is also available through the world-wide-web at this URL:
+* https://opensource.org/licenses/AFL-3.0
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade this module to a newer
+* versions in the future. If you wish to customize this module for your
+* needs please refer to CustomizationPolicy.txt file inside our module for more information.
+*
+* @author Webkul IN
+* @copyright Since 2010 Webkul
+* @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+*/
+.wk-text-bold {  font-weight: bold !important; }
+
+.add_more_time_slot_price_day {
+    margin-left: 7px;
+}
+
+.add_more_time_slot_price {
+    margin-left: 7px;
+}
+
+div.checker,
+.ui-icon {
+    display: inline-block !important;
+}
+
+.leaf {
+    margin-left: 18px;
+}
+
+#wk_category_tree label {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+
+/*css for admin category tree*/
+
+#wk_category_tree {
+    padding-left: 0;
+}
+
+#wk_category_tree ul {
+    padding-left: 15px;
+}
+
+#wk_category_tree {
+    border: none !important;
+}
+
+#wk_category_tree li {
+    list-style: none;
+}
+
+
+/*for calendar made from calendar.js*/
+
+#date-compare {
+    display: none;
+}
+
+.disabled_specific_dates {
+    margin-top: 50px;
+}
+
+.disabled_specific_dates>.pull-right {
+    float: left!important;
+}
+
+.remove_disable_date {
+    float: right;
+    padding: 0px 5px;
+    cursor: pointer;
+}
+
+.edit_disable_date_slots {
+    float: right;
+    padding: 0px 5px;
+    cursor: pointer;
+}
+
+.disabled_date_container {
+    padding: 5px 10px;
+    background-color: #2eacce;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 2px;
+    margin-bottom: 5px;
+}
+
+.slot_deactive_img,
+.slot_active_img {
+    cursor: pointer;
+}
+
+
+/*Css for booing form*/
+
+#date_range_prices_content {
+    display: none;
+}
+
+.calender-disabled-dates .ui-datepicker-day-price {
+    opacity: .6;
+}
+
+.calender-disabled-dates .ui-state-default {
+    opacity: .6;
+}
+
+
+/*booking information calendar page css*/
+
+.header-rmsearch-input:-ms-input-placeholder {
+    color: #333333;
+}
+
+#search_date_from,
+#search_date_to {
+    background: #ffffff url("../../views/img/icon/icon-calendar.png") no-repeat scroll 96% 50%;
+    height: 35px;
+    padding-left: 15px;
+}
+
+.arrow_span {
+    width: 5%;
+}
+
+#rooms-search-submit {
+    margin-top: 18px;
+}
+
+#stats-calendar .ui-datepicker {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#stats-calendar .ui-widget-header {
+    border: none!important;
+    background: none!important;
+    font-size: 30px;
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
+    color: #666;
+}
+
+#stats-calendar .ui-datepicker td span,
+#stats-calendar .ui-datepicker td a {
+    text-align: center!important;
+}
+
+#stats-calendar .ui-datepicker .ui-datepicker-header {
+    padding: 10px 0!important;
+}
+
+#stats-calendar .ui-datepicker th {
+    text-align: center!important;
+    font-size: 14px;
+    color: #444;
+    font-family: 'Oxygen', sans-serif;
+}
+
+#stats-calendar .ui-datepicker td {
+    padding: 10px 2px!important;
+    text-align: center!important;
+}
+
+#stats-calendar .ui-datepicker td i {
+    font-size: 8px;
+}
+
+#stats-calendar .ui-state-default,
+#stats-calendar .ui-widget-content #stats-calendar .ui-state-default,
+#stats-calendar .ui-widget-header #stats-calendar .ui-state-default {
+    border: none!important;
+    background: none!important;
+    color: #555555;
+    font-size: 14px;
+    display: inline-block;
+}
+
+#stats-calendar .ui-widget-content {
+    border: 1px solid #ccc!important;
+}
+
+#stats-calendar .ui-datepicker-day-price {
+    display: inline-block!important;
+    padding: 2px 4px!important;
+    text-align: right;
+    text-decoration: none;
+    background: #2eacce;
+    color: #fff;
+    font-size: 11px;
+    border-radius: 2px;
+}
+
+#stats-calendar .ui-icon-circle-triangle-e {
+    background-position: -32px 0px;
+}
+
+#stats-calendar .ui-icon-circle-triangle-w {
+    background-position: -97px 0px;
+}
+
+#stats-calendar .ui-state-hover,
+#stats-calendar .ui-widget-content #stats-calendar .ui-state-hover,
+#stats-calendar .ui-widget-header #stats-calendar .ui-state-hover,
+#stats-calendar .ui-state-focus,
+#stats-calendar .ui-widget-content #stats-calendar .ui-state-focus,
+#stats-calendar .ui-widget-header #stats-calendar .ui-state-focus {
+    border: none!important;
+    background: none!important;
+}
+
+#stats-calendar .ui-datepicker-inline {
+    width: 100%!important;
+}
+
+#stats-calendar .ui-datepicker-year {
+    font-size: 20px!important;
+}
+
+#stats-calendar .ui-datepicker-month {
+    font-size: 20px!important;
+}
+
+#stats-calendar .ui-datepicker-group-first {
+    border-right: 1px solid #ccc;
+}
+
+.error_border {
+    border: 2px solid red !important;
+}
+
+#stats_search_form {
+    margin-top: 15px;
+}
+
+#availability-search-submit {
+    background-color: #2eacce !important;
+    font-weight: bold !important;
+    padding: 8px 40px;
+    text-transform: capitalize;
+}
+
+#stats_search_form label {
+    font-size: 12px;
+    /* text-transform: uppercase; */
+}
+
+#stats-calendar .booking_available .icon-circle {
+    color: #7EC77B;
+}
+
+#stats-calendar .booking_unavailable .icon-circle {
+    color: #CD5D5D;
+}
+
+.ui-state-disabled {
+    pointer-events: none;
+}
+
+.date_ranges_info_td .popover-content {
+    padding: 9px 14px!important;
+    line-height: 25px!important;
+    font-size: 13px!important;
+    color: #000!important;
+}
+
+.time_slots_info_td .popover-content {
+    padding: 0px!important;
+    color: #000!important;
+}
+
+.time_slots_info_td table {
+    padding: 0px 10px!important;
+    width: 100%!important;
+}
+
+.time_slots_info_td .popover {
+    max-width: 400px!important;
+}
+
+#booking_disable_dates .modal-dialog {
+    width: 300px !important;
+}
+
+#wk_booking_product_info_form .sloting_date_from,
+#wk_booking_product_info_form .sloting_date_to,
+#wk_booking_product_info_form .booking_time_from,
+#wk_booking_product_info_form .booking_time_to,
+#stats_search_form #search_date_from,
+#stats_search_form #search_date_to {
+    cursor: text;
+}
+
+#map-canvas {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    height: 400px;
+}
+
+.wk-margin-20 {
+    margin: 20px 0;
+}
+
+#type-selector {
+    color: #fff;
+    background-color: #4d90fe;
+    padding: 5px 11px 0px 11px;
+}
+
+.controls {
+    margin-top: 8px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 30%);
+}
+
+#pac-input {
+    background-color: #fff;
+    padding: 0 11px 0 13px;
+    width: 400px;
+    margin-top: 10px;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+}
+
+.wk_text_capitalize {
+    text-transform: capitalize !important;
+}
+
+.wk-img-preview {
+    cursor: auto;
+}
+
+.popover {
+    background-color: white !important;
+}

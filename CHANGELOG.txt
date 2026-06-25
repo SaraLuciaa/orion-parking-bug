@@ -1,0 +1,312 @@
+______________________________________________________________
+# Change Log 6.0.2 To V6.0.3 | COMPATIBLE:: PRESTASHOP V9.x.x
+______________________________________________________________
+
+## Improvement:
+- PS9 compatible
+
+## Bug fixed:
+- Total slot quantity is not working according to the time slots quantity
+- Display regular price after discount to customers not working when disable a day or date between a date range
+- Slot booking quantity issue
+- If booking cart table does not have entry then do not proceed order
+
+## Update Policy
+-The admin only needs to upload the ZIP file of the new module version (V6.0.3).
+-An upgrade script is included in the module, which will automatically perform the necessary upgrade tasks for V2.1.0.
+- Upgrade script available from V5.2.0
+
+## Added hook
+- actionAdminControllerSetMedia
+
+______________________________
+# Change Log 6.0.1 To V6.0.2
+______________________________
+
+## Improvement:
+- Use AdvancedMarkerElement for google map because Marker is depreciated in google map API
+- Show a calender to admin to display all bookings
+
+## Bug fixed:
+- Multishop issues
+- Validation improved
+- Responsiveness issue
+- Fixed bulk action issue
+- Fixed translation issue
+- Compatible with PHP 7.2
+- Fixed text/display issues
+- Hide price and button when product is not in selected dates
+- Show allowed image extensions
+- Product should be display when admin enter min 3 letters to search the Product
+- Show a loader when fetching the slots for the best user experience
+- Provide sort by icon for shop column in "All shops" context
+- Provide configuration tab on booking products listing page at back office
+
+______________________________
+# Change Log 6.0.0 To V6.0.1
+______________________________
+
+## Improvement:
+- Compatible with new & experimental features page
+- Show red color for booked dated
+- Code improved
+- Move doc in docs folder
+
+## Bug fixed:
+- Show slots to the customer by country time zone
+- Validation improved
+- BO grid search issue fixed
+- Fixed text/display issues
+- Fixed translation issue
+
+
+______________________________
+# Change Log 5.5.2 To V6.0.0
+______________________________
+
+## Improvement:
+- Event type booking
+- Config page UI changed
+- Min and max Date Range booking
+- Rental product booking
+
+## Bug fixed:
+- Add booking product in all shop
+- BO grid search issue fixed
+- Text issues
+- Translation issue
+- Responsiveness issue
+- Validation improved
+
+______________________________
+# Change Log 5.5.1 To V5.5.2
+______________________________
+
+## Improvement:
+- Show shop name column in multishop
+- code improved
+
+## Bug fixed:
+- Calculation wrong when timezone is not UTC on server
+- Validation improved
+- Responsiveness issue
+- Translation issue
+- Text issues
+- Multishop issues
+- Booking disabled when catalog mode is on
+- Minimum quantity for sale is not working with booking product
+
+__________________________
+______________________________
+# Change Log 5.5.0 To V5.5.1
+______________________________
+
+## Improvement:
+- Compatible with PS8
+- code improved
+
+## Bug fixed:
+- miner design fixed
+
+______________________________
+# Change Log 5.4.0 To V5.5.0
+______________________________
+
+## Fixed bugs:
+
+- Code improved
+- Compatible with PHP 7.4
+- Design issue
+- Validation improved
+- Text issues
+- Compatible with PS1.8
+
+## Added features:
+
+- Add cross-selling banners on config page
+- Get location coordinates from google map
+- Set Monday as the first day of the week from config
+- Display booking orders in the new tab in BO
+- Display booking products with filter on new page in FO
+- Admin can set 'booking before' in hours for product
+- Admin can create orders for customers
+- Add up & down button for quantity field
+- Give config to show regular price as strike price
+
+## Update Policy
+
+- Mobule need file update & upgrade module from module section
+
+# DB Changes
+- Add booking_before in wk_booking_product_info table.
+
+
+______________________________
+# Change Log 5.3.0 To V5.4.0
+______________________________
+
+## Fixed bugs:
+
+- Translation issue
+- Fetal error on booking create page
+- Compatible with new prestashop version
+- Code improved
+- Design issue
+
+## Added features:
+
+- Restock quantity on cancel order
+- Manage quantity slot wise
+______________________________
+# Change Log 5.2.0 To V5.3.0
+______________________________
+
+## Fixed bugs:
+
+- [-]FO :  Module required file is not included in override file.
+- [-]FO :  Stop adding more than one from product page when more than one product is visible.
+- [-]FO :  Resizing slot on changes date in date time slot type product.
+- [-]FO :  Js file string is not translated.
+- [-]FO :  timeSlotType is undefined on product quick view paged.
+- [-]FO :  When apply discount code then ps cart layout is displayed because not override tpl file.
+- [-]FO :  Missing validation when product is added in the cart and after that admin applied selected days/dates.
+- [-]BO :  If product price in decimal then on add new price becomes a superior integer on the new slot
+- [-]BO :  Display issue of cursor pointer at Image tab
+- [-]BO :  Getting fatal error while saving the 'Disable Special Days' without selecting special days
+
+## Added features:
+
+- [+]BO : Make it multi-store compatible.
+- [+]FO : Show map on booking product page.
+
+## Update Policy
+
+- Mobule need only file update, can be updated only by UPLOADING new version on module
+
+# DB Changes
+- Add show_map, address, latitude and longitude in wk_booking_product_info table to show location on map.
+- Added table for Multishop Compatible
+
+##############################################################################################################
+______________________________
+# Change Log 5.1.1 To V5.2.0
+______________________________
+
+## Fixed bugs:
+
+- [-]FO :  call ajax on blur instead of keyup on frontend product page.
+- [-]FO :  Condition of the product is not displaying at the front end until and unless select display option from catalog.
+- [-]BO :  issue to show popover of availability & rates when changes month in the calendar.
+- [-]BO :  While adding the time slots, admin is able to select 'Date from' greater than the 'date to'.
+- [-]BO :  Issue occurred while uploading any file greater than 8 mb.
+- [-]BO :  Cursor pointer is missing on cover image status.
+- [-]BO :  Display issue of Product name text field.
+- [-]BO :  Translation issues.
+- [-]BO :  Text issues.
+- [-]BO :  Customer is able to book the product for the expired time slots.
+- [-]BO :  Deletion is not working properly in Booking time slots.
+- [-]BO :  Product name is accepting spaces.
+- [-]BO :  Issue occurred while clicking on cancel button under Manage Booking Products Price Rules tab.
+
+## Added features:
+
+- [+]BO : Differentiate booking product from normal product in catalog.
+- [+]BO : Day wise time slots creation.
+
+## Update Policy
+
+- Mobule need only file update, can be updated only by UPLOADING new version on module
+
+# DB Changes
+- Add slot_day and time_slot_type in wk_booking_time_slots_prices table to Day wise time slots creation.
+feature
+
+##############################################################################################################
+______________________________
+# Change Log 5.1.0 To V5.1.1
+______________________________
+
+## Added features:
+
+- [+]CO : Booking Information is added in the order confirmation email.
+- [+]CO : Booking Information is added in the order Invoice.
+
+## Improved/changed features:
+
+- [*]CO : Next Date calculation is improved in the module. Some times leads to infinite loop for some time zones.
+- [*]CO : WkBookingProductImage Class deleted.
+- [*]CO : Used prestashop product image in booking product tab.
+- [*]CO : Remove install.sql file and use class WkPsBookingDb to create tables
+
+## Fixed bugs:
+
+- [-]CO :  booking product listing issue resolve on multishop.
+- [-]CO :  updateQuantity() issue resolve
+- [-]BO :  Same Day Time Slot issue resolve.
+
+## Update Policy
+
+- Mobule need only file update, can be updated only by UPLOADING new version on module
+
+______________________________
+# Change Log 5.0.0 To V5.1.0:
+______________________________
+
+## Added features:
+
+- [+]BO : Admin can disable dates and special days of the booking product of date range.
+- [+]BO : Admin can disable slots of date ranges and special days of the booking product of time slots.
+- [+]BO : Admin can see the calendar information of the booking product.
+- [+]BO : Admin can add tax rate of the product.
+
+- [+]FO : Customer can see the booking dates in selected booking range.
+
+## Update Policy
+
+- Database changed, Module need upload new file then UNINSTALL and re-installation.
+
+##############################################################################################################
+
+
+# Change Log 4.0.0 To V5.0.0:
+
+## Added features:
+
+- [+]MO : Now Booking Product is added from seperate controller (AdminBookingProduct).
+- [+]MO : Admin can add date range type as well as time slot type booking products.
+- [+]MO : Admin can add feature plans on booking products.
+- [+]MO : product quickview, Product details, cart checkout and order confirmation pages designs are overrided as per booking product display.
+
+## Update Policy
+
+- Mobule need only file update, can be updated only by UPLOADING new version on module
+
+##############################################################################################################
+
+# Change Log V4.0.0:
+
+## Compatible:
+
+- [-]COMP : parent::__construct() has been moved to top.
+- [-]COMP : ActionFrontControllerSetMedia is added in booking.php to add js and js variables of front hooks.
+- [-]COMP : ActionAdminControllerSetMedia is added in booking.php to add js and js variables of admin hooks.
+- [-]COMP : hookDisplayBackOfficeHeader is removed.
+- [-]COMP : hookActionAssignAttributesGroups is removed.
+
+## Improved/changed features:
+
+- [*]MO : uninstallTab() improved.
+- [*]MO : All variables are camelCaps.
+- [*]MO : Improved overrided AdminAttributesGroupsController.php .
+- [*]MO : Improved PsBookingAttribute.php .
+- [*]MO : getAllDateAttributes() is added in PsBookingAttribute.php .
+- [*]MO : $id variable is removed in PsBookingAttribute.php .
+- [*]MO : registerModuleHooks() is added in booking.php .
+- [*]MO : createTables() added.
+- [*]MO : License has been added to every file.
+- [*]MO : License.txt has been added.
+- [*]MO : CHANGELOG.txt has been added.
+
+## Update Policy
+
+- Module need upload new file then UNINSTALL and re-installation.
