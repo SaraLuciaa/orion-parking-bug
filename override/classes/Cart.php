@@ -316,8 +316,10 @@ class Cart extends CartCore
                         $in_order = true;
                     } else {
                         foreach ($products as $product) {
-                            if ($cart_rule['obj']->gift_product == $product['id_product']
-                            && $cart_rule['obj']->gift_product_attribute == $product['id_product_attribute']) {
+                            if (
+                                $cart_rule['obj']->gift_product == $product['id_product']
+                                && $cart_rule['obj']->gift_product_attribute == $product['id_product_attribute']
+                            ) {
                                 $in_order = true;
                             }
                         }
@@ -365,5 +367,94 @@ class Cart extends CartCore
         }
 
         return Tools::ps_round((float) $order_total, $compute_precision);
+    }
+
+    public function deleteProduct(
+        $id_product,
+        $id_product_attribute = 0,
+        $id_customization = 0,
+        $id_address_delivery = 0,
+        $preserve_gift_removal = false
+    ) {
+        error_log("======= psbooking deleteProduct LLAMADO para id_product: $id_product =======");
+        $result = parent::deleteProduct(
+            $id_product,
+            $id_product_attribute,
+            $id_customization,
+            $id_address_delivery,
+            $preserve_gift_removal
+        );
+
+        if (Module::isInstalled('psbooking') && Module::isEnabled('psbooking')) {
+            include_once dirname(__FILE__) . '/../../modules/psbooking/classes/WkBookingRequiredClasses.php';
+            $objWkBookingsCart = new WkBookingsCart();
+            $bookingCartInfo = $objWkBookingsCart->getBookingProductCartInfo(
+                $id_product,
+                $this->id,
+                $id_product_attribute
+            );
+            if ($bookingCartInfo) {
+                foreach ($bookingCartInfo as $cartInfo) {
+                    $objCartBooking = new WkBookingsCart($cartInfo['id']);
+                    $objCartBooking->delete();
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function updateQty(
+        $quantity,
+        $id_product,
+        $id_product_attribute = null,
+        $id_customization = false,
+        $operator = 'up',
+        $id_address_delivery = 0,
+        Shop $shop = null,
+        $auto_add_cart_rule = true,
+        $preserve_gift_removal = false
+    ) {
+        $result = parent::updateQty(
+            $quantity,
+            $id_product,
+            $id_product_attribute,
+            $id_customization,
+            $operator,
+            $id_address_delivery,
+            $shop,
+            $auto_add_cart_rule,
+            $preserve_gift_removal
+        );
+
+        if ($operator == 'down') {
+            $product_in_cart = false;
+            $products = $this->getProducts();
+            foreach ($products as $product) {
+                if ($product['id_product'] == $id_product && $product['id_product_attribute'] == $id_product_attribute) {
+                    $product_in_cart = true;
+                    break;
+                }
+            }
+
+            if (!$product_in_cart && Module::isInstalled('psbooking') && Module::isEnabled('psbooking')) {
+                error_log("======= psbooking updateQty (producto eliminado de PS) LLAMADO para id_product: $id_product =======");
+                include_once dirname(__FILE__) . '/../../modules/psbooking/classes/WkBookingRequiredClasses.php';
+                $objWkBookingsCart = new WkBookingsCart();
+                $bookingCartInfo = $objWkBookingsCart->getBookingProductCartInfo(
+                    $id_product,
+                    $this->id,
+                    $id_product_attribute
+                );
+                if ($bookingCartInfo) {
+                    foreach ($bookingCartInfo as $cartInfo) {
+                        $objCartBooking = new WkBookingsCart($cartInfo['id']);
+                        $objCartBooking->delete();
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 }
