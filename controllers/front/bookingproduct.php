@@ -41,11 +41,15 @@ class psbookingbookingProductModuleFrontController extends ModuleFrontController
         $dateFrom = str_replace('-', '/', Tools::getValue('date_from'));
         if (!$dateFrom) {
             $dateFrom = date('m-d-Y');
+        } else {
+            $this->context->cookie->booking_date_from = $dateFrom;
         }
 
         $dateTo = str_replace('-', '/', Tools::getValue('date_to'));
         if (!$dateTo) {
             $dateTo = date('m-d-Y', strtotime('+ 1 months'));
+        } else {
+            $this->context->cookie->booking_date_to = $dateTo;
         }
 
         $type = Tools::getValue('type');

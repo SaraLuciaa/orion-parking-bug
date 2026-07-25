@@ -1557,6 +1557,14 @@ class PsBooking extends Module
             $product = new Product((int) $idProduct);
             $minimal_quantity = $product->minimal_quantity;
             $dateFrom = date('Y-m-d', strtotime('+' . $bookingProductInformation['booking_before'] . ' hours'));
+
+            if (isset($this->context->cookie->booking_date_from) && $this->context->cookie->booking_date_from) {
+                $cookieDateFrom = date('Y-m-d', strtotime(str_replace('-', '/', $this->context->cookie->booking_date_from)));
+                if (strtotime($cookieDateFrom) >= strtotime($dateFrom)) {
+                    $dateFrom = $cookieDateFrom;
+                }
+            }
+
             // if min days booking set then date to be (from date + min days booking)
             $minDaysBooking = $bookingProductInformation['min_days_booking'];
             // $minDaysBooking = 0;
@@ -1572,10 +1580,17 @@ class PsBooking extends Module
                 }
                 $dateTo = date('Y-m-d', strtotime($minDaysBooking . ' day', strtotime($dateFrom)));
             }
+
+            if (isset($this->context->cookie->booking_date_to) && $this->context->cookie->booking_date_to) {
+                $cookieDateTo = date('Y-m-d', strtotime(str_replace('-', '/', $this->context->cookie->booking_date_to)));
+                if (strtotime($cookieDateTo) >= strtotime($dateTo)) {
+                    $dateTo = $cookieDateTo;
+                }
+            }
             $this->context->smarty->assign(
                 [
-                    'date_from' => date('m-d-Y', strtotime($dateFrom)),
-                    'date_to' => date('m-d-Y', strtotime($dateTo)),
+                    'date_from' => $dateFrom,
+                    'date_to' => $dateTo,
                     'minimal_quantity' => $minimal_quantity,
                 ],
             );
