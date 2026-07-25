@@ -93,6 +93,31 @@
         {if isset($product.isBookingProduct) && $product.isBookingProduct}
             </br>
             <span class="booking_product_label">{l s='Booking product' d='Shop.Theme.Catalog'}</span>
+            {if isset($product.booking_product_data) && $product.booking_product_data}
+              <div class="booking-dates text-muted" style="font-size: 12px; margin-top: 5px;">
+                {foreach from=$product.booking_product_data item=bookingProduct}
+                  <div class="booking-date-item">
+                    {if $bookingProduct['booking_type'] == WkBookingProductInformation::TYPE_DATE_RANGE || $bookingProduct['booking_type'] == WkBookingProductInformation::TYPE_RENTAL}
+                      {date('m-d-y', strtotime($bookingProduct['date_from']))|escape:'htmlall':'UTF-8'} - {date('m-d-y', strtotime($bookingProduct['date_to']))|escape:'htmlall':'UTF-8'}
+                    {else if $bookingProduct['booking_type'] == WkBookingProductInformation::TYPE_TIME_SLOT}
+                      {date('m-d-y', strtotime($bookingProduct['date_from']))|escape:'htmlall':'UTF-8'}
+                      {$bookingProduct['time_from']|escape:'htmlall':'UTF-8'} - {$bookingProduct['time_to']|escape:'htmlall':'UTF-8'}
+                    {else if $bookingProduct['booking_type'] == WkBookingProductInformation::TYPE_EVENT}
+                      {date('m-d-y', strtotime($bookingProduct['date_from']))|escape:'htmlall':'UTF-8'}
+                      {if $bookingProduct['time_from']!='00:00'}
+                        {$bookingProduct['time_from']|escape:'htmlall':'UTF-8'}
+                      {/if}
+                      {if $bookingProduct['date_to'] != '0000-00-00 00:00:00'}
+                        - {date('m-d-y', strtotime($bookingProduct['date_to']))|escape:'htmlall':'UTF-8'}
+                        {if $bookingProduct['time_to']!='00:00'}
+                          {$bookingProduct['time_to']|escape:'htmlall':'UTF-8'}
+                        {/if}
+                      {/if}
+                    {/if}
+                  </div>
+                {/foreach}
+              </div>
+            {/if}
         {/if}
     </span>
 

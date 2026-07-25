@@ -1514,10 +1514,12 @@ class PsBooking extends Module
                         }
                         $productValue = $presentedCart['products'][$key]; //  To resolve Notice: Indirect modification of overloaded element
                         $productValue['isBookingProduct'] = 1;
+                        $productValue['booking_product_data'] = $bookingProCartInfo;
                         $productValue['total_price_tax_excl'] = $totalPriceTE;
                         $productValue['total_price_tax_excl_formatted'] = WkBookingPsHelper::displayPrice(
                             $totalPriceTE,
                         );
+                        $presentedCart['products'][$key] = $productValue;
                     }
                 }
             }
