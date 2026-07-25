@@ -43,13 +43,13 @@ class AdminBookingProductPricePlansSettingsController extends ModuleAdminControl
         $this->toolbar_title = $this->module->l('Price Rules', 'AdminBookingProductPricePlansSettingsController');
 
         $this->_join .= 'JOIN `' . _DB_PREFIX_ . 'product_lang` pl ON (pl.`id_product` = a.`id_product` AND pl.`id_lang`=' .
-        (int) $this->context->language->id . ' AND pl.`id_shop` = ' . (int) Shop::CONTEXT_SHOP . ')';
+            (int) $this->context->language->id . ' AND pl.`id_shop` = ' . (int) Shop::CONTEXT_SHOP . ')';
         $this->_select .= ' CONCAT(pl.`name`, " (#", a.`id_product`, ")") as product_name,
         IF(a.impact_type=1 , CONCAT(round(a.impact_value, 2), " ",  "%"), a.impact_value) AS impact_value';
         $this->_select .= ' ,IF(a.impact_type=1 , \'' . $this->module->l('Percentage', 'AdminBookingProductPricePlansSettingsController') . '\', \'' .
-        $this->module->l('Fixed price') . '\') AS impact_type';
+            $this->module->l('Fixed price') . '\') AS impact_type';
         $this->_select .= ' ,IF(a.impact_way=1 , \'' . $this->module->l('Decrease', 'AdminBookingProductPricePlansSettingsController') . '\', \'' .
-        $this->module->l('Increase', 'AdminBookingProductPricePlansSettingsController') . '\') AS impact_way';
+            $this->module->l('Increase', 'AdminBookingProductPricePlansSettingsController') . '\') AS impact_way';
 
         $impactWays = [1 => $this->module->l('Decrease'), 2 => $this->module->l('Increase', 'AdminBookingProductPricePlansSettingsController')];
         $impactTypes = [1 => $this->module->l('Percentage'), 2 => $this->module->l('Fixed price', 'AdminBookingProductPricePlansSettingsController')];
@@ -277,8 +277,8 @@ class AdminBookingProductPricePlansSettingsController extends ModuleAdminControl
         } else {
             $objCurrency = new Currency((int) Configuration::get('PS_CURRENCY_DEFAULT'));
             $currencySign = $objCurrency->sign;
-            $dateFrom = date('d-m-Y');
-            $dateTo = date('d-m-Y', strtotime('+1 day', strtotime($dateFrom)));
+            $dateFrom = date('m-d-Y');
+            $dateTo = date('m-d-Y', strtotime('+1 day', strtotime($dateFrom)));
             if ($this->display == 'edit') {
                 $featurePriceId = Tools::getValue('id');
                 $featurePriceInfo = new WkBookingProductFeaturePricing($featurePriceId);
@@ -364,8 +364,8 @@ class AdminBookingProductPricePlansSettingsController extends ModuleAdminControl
             }
         }
         $featurePriceName = Tools::getValue('feature_price_name');
-        $dateFrom = date('Y-m-d', strtotime(Tools::getValue('date_from')));
-        $dateTo = date('Y-m-d', strtotime(Tools::getValue('date_to')));
+        $dateFrom = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_from'))));
+        $dateTo = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_to'))));
 
         $isSpecialDaysExists = Tools::getValue('is_special_days_exists');
         $specialDays = Tools::getValue('special_days');
@@ -373,7 +373,7 @@ class AdminBookingProductPricePlansSettingsController extends ModuleAdminControl
         $priceImpactType = Tools::getValue('price_impact_type');
         $impactValue = Tools::getValue('impact_value');
         $dateSelectionType = Tools::getValue('date_selection_type');
-        $specificDate = date('Y-m-d', strtotime(Tools::getValue('specific_date')));
+        $specificDate = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('specific_date'))));
         $jsonSpecialDays = json_encode($specialDays);
         $bookingProductFeaturePricing = new WkBookingProductFeaturePricing();
         $isPlanTypeExists = 0;
@@ -409,7 +409,7 @@ class AdminBookingProductPricePlansSettingsController extends ModuleAdminControl
         }
         if ($isPlanTypeExists) {
             $e = $this->module->l('Booking price rule already exists in which some dates are common with this plan. ', 'AdminBookingProductPricePlansSettingsController')
-            . $this->module->l(' Please select a different date range.', 'AdminBookingProductPricePlansSettingsController');
+                . $this->module->l(' Please select a different date range.', 'AdminBookingProductPricePlansSettingsController');
             $this->errors[] = $e;
         } else {
             if (!$productId) {

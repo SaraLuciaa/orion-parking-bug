@@ -17,39 +17,39 @@
 * @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
 */
 
-$(document).ready(function() {
+$(document).ready(function () {
     //event booking type related code
     if ($('.event_category').length > 1) {
-        $('.event_category').tagify({delimiters: [13,44], addTagPrompt: add_category_wk});
-        $('.event_lang').tagify({delimiters: [13,44], addTagPrompt: add_lang_wk});
-        $('.age_group').tagify({delimiters: [13,44], addTagPrompt: add_age_group_wk});
+        $('.event_category').tagify({ delimiters: [13, 44], addTagPrompt: add_category_wk });
+        $('.event_lang').tagify({ delimiters: [13, 44], addTagPrompt: add_lang_wk });
+        $('.age_group').tagify({ delimiters: [13, 44], addTagPrompt: add_age_group_wk });
     }
-    $('#wk_booking_product_info_form').submit( function() {
-        $(this).find('.event_category').each(function() {
+    $('#wk_booking_product_info_form').submit(function () {
+        $(this).find('.event_category').each(function () {
             $(this).val($(this).tagify('serialize'));
         });
-        $(this).find('.event_lang').each(function() {
+        $(this).find('.event_lang').each(function () {
             $(this).val($(this).tagify('serialize'));
         });
-        $(this).find('.age_group').each(function() {
+        $(this).find('.age_group').each(function () {
             $(this).val($(this).tagify('serialize'));
         });
     });
-    $('#event-banner-file-selectbutton').click(function(e){
+    $('#event-banner-file-selectbutton').click(function (e) {
         $('#event-banner-file-name').trigger('click');
     });
-    $('#event-banner-file-name').click(function(e){
+    $('#event-banner-file-name').click(function (e) {
         $('#event_banner').trigger('click');
     });
-    $('#event_banner').change(function(e){
+    $('#event_banner').change(function (e) {
         var val = $(this).val();
         var file = val.split(/[\\/]/);
-        $('#event-banner-file-name').val(file[file.length-1]);
+        $('#event-banner-file-name').val(file[file.length - 1]);
     });
     $('[name="event_banner"]').change(function () {
         previewEventBanner(this);
     });
-    $('.preview_banner').click(function(e){
+    $('.preview_banner').click(function (e) {
         let preview_modal = $('#preview_modal');
         let preview_modal_img = $('#preview-modal-img');
         preview_modal_img.attr('src', this.src)
@@ -61,25 +61,25 @@ $(document).ready(function() {
             reader.onload = function (e) {
                 imagePath = e.target.result
                 $('.event-banner-div').hide();
-                $('#preview_banner').attr('src',imagePath);
+                $('#preview_banner').attr('src', imagePath);
             }
             reader.readAsDataURL(input.files[0]);
         }
     }
 
-    $(document).on("click", '#delete_event_banner', function(e) {
+    $(document).on("click", '#delete_event_banner', function (e) {
         e.preventDefault();
         $('#event_banner_delete_modal').modal('show');
         $('#event_banner_delete_modal button[value="confirm"]').on('click', () => {
             let id_product = $('#event_banner_delete_modal button[value="confirm"]').attr('id-product');
             $.ajax({
-				type: 'post',
-				url: admin_booking_product_url,
-				data: {
-					action: 'deleteEventBanner',
-					ajax: true,
-					id_product: id_product,
-				},
+                type: 'post',
+                url: admin_booking_product_url,
+                data: {
+                    action: 'deleteEventBanner',
+                    ajax: true,
+                    id_product: id_product,
+                },
                 success: function (result) {
                     var data = JSON.parse(result);
                     if (data.status == 'failed') {
@@ -96,7 +96,7 @@ $(document).ready(function() {
     $('a[data-toggle="tab"]').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
-        $('#active_tab').val($(this).attr('href').replace('#',''));
+        $('#active_tab').val($(this).attr('href').replace('#', ''));
     });
 
     // $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
@@ -110,7 +110,7 @@ $(document).ready(function() {
     //     $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
     // }
 
-    $('input[type=radio][name=show_map]').change(function() {
+    $('input[type=radio][name=show_map]').change(function () {
         if (this.value == 0) {
             $('.show_map_div').hide();
         }
@@ -118,7 +118,7 @@ $(document).ready(function() {
             $('.show_map_div').show();
         }
     });
-    $('input[type=radio][name=multiple_slot]').change(function() {
+    $('input[type=radio][name=multiple_slot]').change(function () {
         if (this.value == 0) {
             $('.event_time_slots_block').hide();
         }
@@ -137,7 +137,7 @@ $(document).ready(function() {
         changeTabStatus(active_tab);
     }
 
-    $(document).on("click", '.submitBookingProduct, #availability-search-submit', function(e) {
+    $(document).on("click", '.submitBookingProduct, #availability-search-submit', function (e) {
         //put active tab in input hidden type
         var active_tab_id = $('.wk-tabs-panel .nav-tabs li.active a').attr('href');
         if (typeof active_tab_id !== 'undefined') {
@@ -146,7 +146,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on("click", '.submitBookingProduct', function(e) {
+    $(document).on("click", '.submitBookingProduct', function (e) {
         //to stop adding multiple times when click on submit button
         var button = $(this);
         setTimeout(function () {
@@ -154,7 +154,7 @@ $(document).ready(function() {
         }, 100)
         //get all checked category value in a input hidden type name 'product_category'
         var rawCheckedID = [];
-        $('.jstree-clicked').each(function() {
+        $('.jstree-clicked').each(function () {
             var rawIsChecked = $(this).parent('.jstree-node').attr('id');
             rawCheckedID.push(rawIsChecked);
         });
@@ -168,7 +168,7 @@ $(document).ready(function() {
     });
 
     // select which type of booking is
-    $('#booking_type').on('change', function() {
+    $('#booking_type').on('change', function () {
         if ($(this).val() == type_date_range) {
             $('.booking_price_period').text(day_text);
             $('.day_range_field').show();
@@ -185,7 +185,7 @@ $(document).ready(function() {
     });
 
     //date range row append
-    $(document).on('click', '#add_more_date_ranges', function() {
+    $(document).on('click', '#add_more_date_ranges', function () {
         var date_ranges_length = $('.booking_date_ranges').length;
         var changeKey = $('.single_date_range_slots_container').length + 1;
 
@@ -204,7 +204,7 @@ $(document).ready(function() {
             html += '<tr>';
             html += '<td class="center">';
             html += '<div class="input-group">';
-            html += '<input autocomplete="off" class="form-control event_sloting_date" type="text" name="event_sloting_date[' + date_ranges_length +']" value="" change_date = "event_sloting_date_' + changeKey +'" change_key = "'+ changeKey +'" readonly>';
+            html += '<input autocomplete="off" class="form-control event_sloting_date" type="text" name="event_sloting_date[' + date_ranges_length + ']" value="" change_date = "event_sloting_date_' + changeKey + '" change_key = "' + changeKey + '" readonly>';
             html += '<span class="input-group-addon">';
             html += '<i class="icon-calendar"></i>';
             html += '</span>';
@@ -231,7 +231,7 @@ $(document).ready(function() {
             html += '<tr>';
             html += '<td class="center">';
             html += '<div class="input-group">';
-            html += '<input autocomplete="off" class="form-control sloting_date_from" type="text" name="sloting_date_from[' + date_ranges_length +']" value="" change_date = "sloting_date_from_' + changeKey +'" change_key = "'+ changeKey +'" readonly>';
+            html += '<input autocomplete="off" class="form-control sloting_date_from" type="text" name="sloting_date_from[' + date_ranges_length + ']" value="" change_date = "sloting_date_from_' + changeKey + '" change_key = "' + changeKey + '" readonly>';
             html += '<span class="input-group-addon">';
             html += '<i class="icon-calendar"></i>';
             html += '</span>';
@@ -240,7 +240,7 @@ $(document).ready(function() {
 
             html += '<td class="center">';
             html += '<div class="input-group">';
-            html += '<input autocomplete="off" class="form-control sloting_date_to" type="text" name="sloting_date_to[' + date_ranges_length +']" value="" change_date = "sloting_date_to_' + changeKey +'" change_key = "'+ changeKey +'" readonly>';
+            html += '<input autocomplete="off" class="form-control sloting_date_to" type="text" name="sloting_date_to[' + date_ranges_length + ']" value="" change_date = "sloting_date_to_' + changeKey + '" change_key = "' + changeKey + '" readonly>';
             html += '<span class="input-group-addon">';
             html += '<i class="icon-calendar"></i>';
             html += '</span>';
@@ -256,77 +256,77 @@ $(document).ready(function() {
         } else {
             html += '<div  class="form-group table-responsive-row col-sm-7 time_slots_prices_table_div">  ';
         }
-            html += '<table class="table time_slots_prices_table">';
-            html += '<thead>';
-            html += '<tr>';
-            html += '<th class="center">';
-            html += '<span>' + slot_time_from_txt + '</span>';
-            html += '</th>';
-            html += '<th class="center">';
-            html += '<span>' + slot_time_to_txt + '</span>';
-            html += '</th>';
-            html += '<th class="center">';
-            html += '<span>' + price_txt + '</span>';
-            html += '</th>';
-            html += '<th class="center">';
-            html += '<span>' + 'Qty' + '</span>';
-            html += '</th>';
-            html += '<th class="center">';
-            html += '<span>' + status_txt + '</span>';
-            html += '</th>';
-            html += '</tr>';
-            html += '</thead>';
-            html += '<tbody>';
-            html += '<tr>';
-            html += '<td class="center">';
-            html += '<div class="input-group">';
-            html += '<input id="booking_time_from" autocomplete="off" class="booking_time_from" type="text" name="booking_time_from' + date_ranges_length + '[]" value="" readonly>';
-            html += '<span class="input-group-addon">';
-            html += '<i class="icon-clock-o"></i>';
-            html += '</span>';
-            html += '</div>';
-            html += '</td>';
-            html += '<td class="center">';
-            html += '<div class="input-group">';
-            html += '<input autocomplete="off" class="form-control booking_time_to" type="text" name="booking_time_to' + date_ranges_length + '[]" value="" readonly>';
-            html += '<span class="input-group-addon">';
-            html += '<i class="icon-clock-o"></i>';
-            html += '</span>';
-            html += '</div>';
-            html += '</td>';
-            html += '<td class="center">';
-            html += '<div class="input-group">';
-            html += '<input type="text" class="day_range_price" name="slot_range_price' + date_ranges_length + '[]" value="' + parseFloat($('#product_price').val()).toFixed(2) + '">';
-            html += '<span class="input-group-addon">' + defaultCurrencySign + '</span>';
-            html += '</div>';
-            html += '</td>';
-            html += '<td class="center">';
-            html += '<div class="input-group">';
-            html += '<input type="text" class="day_range_qty" name="slot_range_qty' + date_ranges_length + '[]" value="' + $('#product_quantity').val() + '">';
-            html += '</div>';
-            html += '</td>';
-            html += '<td class="center">';
-            html += '<div class="slot_status_div">';
-            html += '<input type="hidden" value="1" name="slot_active' + date_ranges_length + '[]" class="time_slot_status day_time_slot_status">';
-            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-            html += '</div>';
-            html += '</td>';
-            html += '<td class="center">';
-            html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-            html += '</td>';
-            html += '</tr>';
-            html += '</tbody>';
-            html += '</table>';
-            html += '<div class="form-group">';
-            html += '<div class="col-lg-12 text-right">';
-            html += '<button class="btn btn-default add_more_time_slot_price" type="button" data-size="s" data-style="expand-right">';
-            html += '<i class="icon-calendar-empty"></i>' + '&nbsp;'+add_more_slots_txt;
-            html += '</button>';
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
+        html += '<table class="table time_slots_prices_table">';
+        html += '<thead>';
+        html += '<tr>';
+        html += '<th class="center">';
+        html += '<span>' + slot_time_from_txt + '</span>';
+        html += '</th>';
+        html += '<th class="center">';
+        html += '<span>' + slot_time_to_txt + '</span>';
+        html += '</th>';
+        html += '<th class="center">';
+        html += '<span>' + price_txt + '</span>';
+        html += '</th>';
+        html += '<th class="center">';
+        html += '<span>' + 'Qty' + '</span>';
+        html += '</th>';
+        html += '<th class="center">';
+        html += '<span>' + status_txt + '</span>';
+        html += '</th>';
+        html += '</tr>';
+        html += '</thead>';
+        html += '<tbody>';
+        html += '<tr>';
+        html += '<td class="center">';
+        html += '<div class="input-group">';
+        html += '<input id="booking_time_from" autocomplete="off" class="booking_time_from" type="text" name="booking_time_from' + date_ranges_length + '[]" value="" readonly>';
+        html += '<span class="input-group-addon">';
+        html += '<i class="icon-clock-o"></i>';
+        html += '</span>';
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="input-group">';
+        html += '<input autocomplete="off" class="form-control booking_time_to" type="text" name="booking_time_to' + date_ranges_length + '[]" value="" readonly>';
+        html += '<span class="input-group-addon">';
+        html += '<i class="icon-clock-o"></i>';
+        html += '</span>';
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="input-group">';
+        html += '<input type="text" class="day_range_price" name="slot_range_price' + date_ranges_length + '[]" value="' + parseFloat($('#product_price').val()).toFixed(2) + '">';
+        html += '<span class="input-group-addon">' + defaultCurrencySign + '</span>';
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="input-group">';
+        html += '<input type="text" class="day_range_qty" name="slot_range_qty' + date_ranges_length + '[]" value="' + $('#product_quantity').val() + '">';
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="1" name="slot_active' + date_ranges_length + '[]" class="time_slot_status day_time_slot_status">';
+        html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+        html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
+        html += '</tbody>';
+        html += '</table>';
+        html += '<div class="form-group">';
+        html += '<div class="col-lg-12 text-right">';
+        html += '<button class="btn btn-default add_more_time_slot_price" type="button" data-size="s" data-style="expand-right">';
+        html += '<i class="icon-calendar-empty"></i>' + '&nbsp;' + add_more_slots_txt;
+        html += '</button>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
 
         $('.time_slots_prices_content').append(html);
         if ($('#booking_type').val() == wk_event_type) {
@@ -335,7 +335,7 @@ $(document).ready(function() {
             let max_date = $('.event_end_date').val();
             $(".event_sloting_date").datepicker({
                 showOtherMonths: true,
-                dateFormat: 'dd-mm-yy',
+                dateFormat: 'mm-dd-yy',
                 minDate: min_date,
                 maxDate: max_date,
             });
@@ -343,7 +343,7 @@ $(document).ready(function() {
     });
 
     //time slots row append
-    $(document).on('click', '.add_more_time_slot_price_day', function() {
+    $(document).on('click', '.add_more_time_slot_price_day', function () {
         var date_ranges_length = $(this).closest('.single_date_range_slots_container').attr('date_range_slot_num');
         html = '<tr>';
         html += '<td class="center">';
@@ -388,7 +388,7 @@ $(document).ready(function() {
         $(this).closest('.time_slots_prices_table_div').find('.time_slots_prices_table').append(html);
     });
 
-    $(document).on('click', '.add_more_time_slot_price', function() {
+    $(document).on('click', '.add_more_time_slot_price', function () {
         var date_ranges_length = $(this).closest('.single_date_range_slots_container').attr('date_range_slot_num');
         html = '<tr>';
         html += '<td class="center">';
@@ -434,10 +434,10 @@ $(document).ready(function() {
     });
 
     //To remove a row created with add new time slots buttons
-    $(document).on('click', '.remove_time_slot', function(e) {
+    $(document).on('click', '.remove_time_slot', function (e) {
         e.preventDefault();
         if ($(this).closest('.time_slots_prices_table').find('.remove_time_slot').length == 1) {
-            if ($('#time_slot_type').val() == time_slot_type_date || $('#booking_type').val() ==  wk_event_type) {
+            if ($('#time_slot_type').val() == time_slot_type_date || $('#booking_type').val() == wk_event_type) {
                 if ($(this).closest('.single_date_range_slots_container').attr('date_range_slot_num') != '0') {
                     $(this).closest('.single_date_range_slots_container').remove();
                 } else {
@@ -451,19 +451,19 @@ $(document).ready(function() {
         }
     });
     //date picker for date ranges
-    $(document).on("focus", ".sloting_date_from, .sloting_date_to", function() {
+    $(document).on("focus", ".sloting_date_from, .sloting_date_to", function () {
         $(".sloting_date_from").datepicker({
             showOtherMonths: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: 0,
-            onSelect: function(selected) {
+            onSelect: function (selected) {
                 var changeDate = $(this).attr('change_key');
-                $("[change_date=sloting_date_to_"+changeDate+"]").datepicker("option","minDate", selected)
+                $("[change_date=sloting_date_to_" + changeDate + "]").datepicker("option", "minDate", selected)
             }
         });
         $(".sloting_date_to").datepicker({
             showOtherMonths: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: 0,
         });
     });
@@ -477,30 +477,30 @@ $(document).ready(function() {
         maxDate: max_date,
     });
 
-     //date picker for event dates
-     $(document).on("focus", ".event_start_date, .event_end_date", function() {
+    //date picker for event dates
+    $(document).on("focus", ".event_start_date, .event_end_date", function () {
         $(".event_start_date").datetimepicker({
             showOtherMonths: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: 0,
-            onSelect: function(selected) {
-                $(".event_end_date").datetimepicker("option","minDate", selected);
-                $(".event_sloting_date").datepicker("option","minDate", selected);
-                $(".event_sloting_date").datepicker("option","maxDate", $(".event_end_date").val());
+            onSelect: function (selected) {
+                $(".event_end_date").datetimepicker("option", "minDate", selected);
+                $(".event_sloting_date").datepicker("option", "minDate", selected);
+                $(".event_sloting_date").datepicker("option", "maxDate", $(".event_end_date").val());
             }
         });
         $(".event_end_date").datetimepicker({
             showOtherMonths: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: $(".event_start_date").val(),
-            onSelect: function(selected) {
-                $(".event_sloting_date").datepicker("option","maxDate", selected);
+            onSelect: function (selected) {
+                $(".event_sloting_date").datepicker("option", "maxDate", selected);
             }
         });
     });
 
     //time picker for time slots
-    $(document).on("focus", ".booking_time_from, .booking_time_to", function() {
+    $(document).on("focus", ".booking_time_from, .booking_time_to", function () {
         $(".booking_time_from, .booking_time_to").timepicker({
             pickDate: false,
             datepicker: false,
@@ -515,7 +515,7 @@ $(document).ready(function() {
         numberOfMonths: 2,
         dateFormat: 'dd-mm-yy',
         minDate: 0,
-        beforeShowDay: function(date) {
+        beforeShowDay: function (date) {
             var currentMonth = date.getMonth() + 1;
             var currentDate = date.getDate();
             if (currentMonth < 10) {
@@ -540,7 +540,7 @@ $(document).ready(function() {
                 }
             }
 
-            $.each(bookingCalendarData, function(key, value) {
+            $.each(bookingCalendarData, function (key, value) {
                 if (key === dateToWork) {
                     if (typeof value.calendarCssClass != 'undefined') {
                         calendarCssClass += ' ' + value.calendarCssClass + ' ' + key + ' ' + 'ui-datepicker-unselectable';
@@ -559,7 +559,7 @@ $(document).ready(function() {
 
     // add popover information and rates on the dates <td>
     if (typeof bookingCalendarData != 'undefined') {
-        $.each(bookingCalendarData, function(key, dateInfo) {
+        $.each(bookingCalendarData, function (key, dateInfo) {
             var dateBookingInfo = dateInfo.booking_info;
             if ((typeof dateInfo.booking_type != 'undefined') && (dateInfo.booking_type == 1 || dateInfo.booking_type == 4)) {
                 if (typeof dateBookingInfo.price.total_price_tax_incl_formatted != 'undefined') {
@@ -569,7 +569,7 @@ $(document).ready(function() {
                     $('body td.' + key + ' .ui-state-default').attr('data-placement', 'auto');
                     $('body td.' + key + ' .ui-state-default').attr('data-html', true);
                     if (typeof dateBookingInfo.price != 'undefined') {
-                        toolTipMsg = wk_total_available_qty + ': ' + dateBookingInfo.available_qty + '</br>' + wk_total_booked_qty + ': ' +dateBookingInfo.booked_qty + '</br>' + wk_price + ': ' + dateBookingInfo.price.total_price_tax_incl_formatted;
+                        toolTipMsg = wk_total_available_qty + ': ' + dateBookingInfo.available_qty + '</br>' + wk_total_booked_qty + ': ' + dateBookingInfo.booked_qty + '</br>' + wk_price + ': ' + dateBookingInfo.price.total_price_tax_incl_formatted;
                     } else {
                         toolTipMsg = no_info_found_txt;
                     }
@@ -593,7 +593,7 @@ $(document).ready(function() {
                 if (typeof dateBookingInfo != 'undefined') {
                     if (dateBookingInfo.length) {
                         slotHtml += '<tbody>';
-                        $.each(dateBookingInfo, function(keySlot, slotInfo) {
+                        $.each(dateBookingInfo, function (keySlot, slotInfo) {
                             slotHtml += '<tr>';
                             slotHtml += '<td>' + slotInfo.time_slot_from + ' ' + to_txt + ' ' + slotInfo.time_slot_to + '</td>';
                             slotHtml += '<td>' + slotInfo.available_qty + '</td>';
@@ -626,11 +626,11 @@ $(document).ready(function() {
     $('#stats-calendar .booking_unavailable .ui-state-default').append('&nbsp;<i class="icon-circle"></i>');
 
     //If change the month in the booking information calendar
-    $(document).on('click', '.calendar_change_month_link', function() {
+    $(document).on('click', '.calendar_change_month_link', function () {
         $('#stats-calendar .booking_available').append('&nbsp;<i class="icon-circle"></i>');
         $('#stats-calendar .booking_unavailable').append('&nbsp;<i class="icon-circle"></i>');
         if (typeof bookingCalendarData != 'undefined') {
-            $.each(bookingCalendarData, function(key, dateInfo) {
+            $.each(bookingCalendarData, function (key, dateInfo) {
                 var dateBookingInfo = dateInfo.booking_info;
                 if (typeof dateInfo.booking_type != 'undefined' && dateInfo.booking_type == 1) {
                     if (typeof dateBookingInfo.price.total_price_tax_incl_formatted != 'undefined') {
@@ -639,7 +639,7 @@ $(document).ready(function() {
                         $('body td.' + key + ' .ui-state-default').attr('data-placement', 'auto');
                         $('body td.' + key + ' .ui-state-default').attr('data-html', true);
                         if (typeof dateBookingInfo.price != 'undefined') {
-                            toolTipMsg = wk_total_available_qty + ': ' + dateBookingInfo.available_qty + '</br>' + wk_total_booked_qty + ': ' + dateBookingInfo.booked_qty + '</br>'+ wk_price + ': ' + dateBookingInfo.price.total_price_tax_incl_formatted;
+                            toolTipMsg = wk_total_available_qty + ': ' + dateBookingInfo.available_qty + '</br>' + wk_total_booked_qty + ': ' + dateBookingInfo.booked_qty + '</br>' + wk_price + ': ' + dateBookingInfo.price.total_price_tax_incl_formatted;
                         } else {
                             toolTipMsg = no_info_found_txt;
                         }
@@ -663,7 +663,7 @@ $(document).ready(function() {
                             slotHtml += '<th>' + status_txt + '</th>';
                             slotHtml += '</thead>';
                             slotHtml += '<tbody>';
-                            $.each(dateBookingInfo, function(keySlot, slotInfo) {
+                            $.each(dateBookingInfo, function (keySlot, slotInfo) {
                                 slotHtml += '<tr>';
                                 slotHtml += '<td>' + slotInfo.time_slot_from + ' ' + to_txt + ' ' + slotInfo.time_slot_to + '</td>';
                                 slotHtml += '<td>' + slotInfo.available_qty + '</td>';
@@ -692,14 +692,14 @@ $(document).ready(function() {
         // To add our class on changing links of months to seperate from other datepickers
         $('[data-toggle="popover"]').popover();
         $('#stats-calendar-info .ui-datepicker-next, #stats-calendar-info .ui-datepicker-prev').addClass('calendar_change_month_link');
-        $('body, .ui-state-default').on('click', function(e) {
+        $('body, .ui-state-default').on('click', function (e) {
             $('.popover').remove();
             $(this).popover('show');
         });
     });
 
     // To remove the other popovers before opening the new popover
-    $('body, .ui-state-default').on('click', function() {
+    $('body, .ui-state-default').on('click', function () {
         $('.popover').remove();
     });
 
@@ -708,12 +708,12 @@ $(document).ready(function() {
         showOtherMonths: true,
         dateFormat: 'mm-dd-yy',
         minDate: 0,
-        beforeShowDay: function(date) {
+        beforeShowDay: function (date) {
             return highlightDateBorder($("#search_date_from").val(), date);
         },
-        onSelect: function(selectedDate) {
+        onSelect: function (selectedDate) {
             var date_format = selectedDate.split("-");
-            var selectedDate = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[1] - 1, date_format[0])));
+            var selectedDate = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[0] - 1, date_format[1])));
             selectedDate.setDate(selectedDate.getDate());
             $("#search_date_to").datepicker("option", "minDate", selectedDate);
         },
@@ -724,18 +724,18 @@ $(document).ready(function() {
         showOtherMonths: true,
         dateFormat: 'mm-dd-yy',
         minDate: 0,
-        beforeShowDay: function(date) {
+        beforeShowDay: function (date) {
             return highlightDateBorder($("#search_date_to").val(), date);
         }
     });
 
-    $('#availability-search-submit').on('click', function(e) {
+    $('#availability-search-submit').on('click', function (e) {
         var dateFrom = $("#search_date_from").val();
         var dateTo = $("#search_date_to").val();
         var dateFromSplit = dateFrom.split("-");
-        var dateFromFormatted = new Date($.datepicker.formatDate('yy-mm-dd', new Date(dateFromSplit[2], dateFromSplit[1] - 1, dateFromSplit[0])));
+        var dateFromFormatted = new Date($.datepicker.formatDate('yy-mm-dd', new Date(dateFromSplit[2], dateFromSplit[0] - 1, dateFromSplit[1])));
         var dateToSplit = dateTo.split("-");
-        var checkOutFormatted = new Date($.datepicker.formatDate('yy-mm-dd', new Date(dateToSplit[2], dateToSplit[1] - 1, dateToSplit[0])));
+        var checkOutFormatted = new Date($.datepicker.formatDate('yy-mm-dd', new Date(dateToSplit[2], dateToSplit[0] - 1, dateToSplit[1])));
         var error = false;
         $("#search_date_from").removeClass("error_border");
         $("#search_date_to").removeClass("error_border");
@@ -765,7 +765,7 @@ $(document).ready(function() {
 
     // Disable dates tab js starts from here
 
-    $('.is_disabled_week_days_exists').on('change', function() {
+    $('.is_disabled_week_days_exists').on('change', function () {
         if ($(this).val() == 1) {
             $('.disabled_week_days').show();
         } else if ($(this).val() == 0) {
@@ -773,7 +773,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.is_disabled_specific_dates_exists').on('change', function() {
+    $('.is_disabled_specific_dates_exists').on('change', function () {
         if ($(this).val() == 1) {
             $('.disabled_specific_dates').show();
         } else if ($(this).val() == 0) {
@@ -782,7 +782,7 @@ $(document).ready(function() {
     });
 
     // add the disabled date ranges in the disable dates json
-    $("button[name='submitDateRange']").on('click', function(e) {
+    $("button[name='submitDateRange']").on('click', function (e) {
         e.preventDefault();
         var id_product = $('#id_ps_product').val();
         var $dateFrom = $('#date-start').val();
@@ -821,10 +821,10 @@ $(document).ready(function() {
                         },
                         method: 'POST',
                         dataType: 'JSON',
-                        success: function(result) {
+                        success: function (result) {
                             $('.booking-disable-slots-content').empty();
                             if (result.status == 'failed') {
-                                $.each(result.errors, function(key, error) {
+                                $.each(result.errors, function (key, error) {
                                     showErrorMessage(error);
                                 });
                             } else if (result.status == 'success') {
@@ -844,7 +844,7 @@ $(document).ready(function() {
                                     var html = '<div class="from-group table-responsive-row clearfix">';
                                     html += '<table class="table booking-disable-slots">';
                                     html += '<tbody>';
-                                    $.each(result.slots, function(key, slot) {
+                                    $.each(result.slots, function (key, slot) {
                                         html += '<tr>';
                                         html += '<td>' + slot.time_slot_from + ' &nbsp;' + to_txt + ' &nbsp;' + slot.time_slot_to + '</td>';
                                         html += '<td><input time_from="' + slot.time_slot_from + '" time_to="' + slot.time_slot_to + '" id_slot="' + slot.id + '" type="checkbox" class="selected_disable_slots"></td>';
@@ -888,7 +888,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '.edit_disable_date_slots', function(e) {
+    $(document).on('click', '.edit_disable_date_slots', function (e) {
         e.preventDefault();
         var id_product = $('#id_ps_product').val();
         var $dateFrom = $(this).attr('date_start');
@@ -918,10 +918,10 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'JSON',
-                    success: function(result) {
+                    success: function (result) {
                         $('.booking-disable-slots-content').empty();
                         if (result.status == 'failed') {
-                            $.each(result.errors, function(key, error) {
+                            $.each(result.errors, function (key, error) {
                                 showErrorMessage(error);
                             });
                         } else if (result.status == 'success') {
@@ -945,13 +945,13 @@ $(document).ready(function() {
                                 var html = '<div class="from-group table-responsive-row clearfix">';
                                 html += '<table class="table booking-disable-slots">';
                                 html += '<tbody>';
-                                $.each(result.slots, function(key_ajax_slots, ajax_slot) {
+                                $.each(result.slots, function (key_ajax_slots, ajax_slot) {
                                     html += '<tr>';
                                     html += '<td>' + ajax_slot.time_slot_from + ' &nbsp;' + to_txt + ' &nbsp;' + ajax_slot.time_slot_to + '</td>';
                                     html += '<td><input time_from="' + ajax_slot.time_slot_from + '" time_to="' + ajax_slot.time_slot_to + '" id_slot="' + ajax_slot.id + '" type="checkbox" class="selected_disable_slots"';
-                                    $.each(disabledDates, function(key_disables_dates, disableRange) {
+                                    $.each(disabledDates, function (key_disables_dates, disableRange) {
                                         if (key_disables_dates == $dateFrom + '_' + $dateTo) {
-                                            $.each(disableRange.slots_info, function(key_slot_info, slot_info) {
+                                            $.each(disableRange.slots_info, function (key_slot_info, slot_info) {
                                                 if (slot_info.time_from == ajax_slot.time_slot_from && slot_info.time_to == ajax_slot.time_slot_to) {
                                                     html += ' checked="checked"';
                                                 }
@@ -975,7 +975,7 @@ $(document).ready(function() {
     });
 
     // Disable dates data save when model open
-    $(document).on('click', '.disableSlotsModalSubmit', function() {
+    $(document).on('click', '.disableSlotsModalSubmit', function () {
         var dateFrom = $('.booking-disable-slots-content').attr('date_from');
         var dateTo = $('.booking-disable-slots-content').attr('date_to');
         var allSlots = $('.booking-disable-slots-content').attr('all_slots');
@@ -998,7 +998,7 @@ $(document).ready(function() {
             return false;
         }
         var slotInfo = new Array();
-        $('.selected_disable_slots:checked').each(function(key, slot) {
+        $('.selected_disable_slots:checked').each(function (key, slot) {
             slotInfo.push({
                 'time_from': $(this).attr('time_from'),
                 'time_to': $(this).attr('time_to')
@@ -1037,7 +1037,7 @@ $(document).ready(function() {
     });
 
     //delete the dateranges from the disables date ranges json
-    $(document).on('click', '.remove_disable_date', function() {
+    $(document).on('click', '.remove_disable_date', function () {
         var indexToRemove = $(this).attr('remove-date-index');
         var disableDatesArray = JSON.parse($('#disabled_specific_dates_json').val());
         delete disableDatesArray[indexToRemove];
@@ -1049,9 +1049,8 @@ $(document).ready(function() {
     $('#date-start').attr('readonly', true);
     $('#date-end').attr('readonly', true);
 
-    $('#time_slot_type').change(function() {
-        if ($(this).val() == time_slot_type_date)
-        {
+    $('#time_slot_type').change(function () {
+        if ($(this).val() == time_slot_type_date) {
             $('#time_slot_type_date').show();
             $('#time_slot_type_day').hide();
         } else {
@@ -1061,65 +1060,65 @@ $(document).ready(function() {
         // $(this).val() will work here
     });
 
-    $(document).on('click','.add_day_wise_slot', function() {
+    $(document).on('click', '.add_day_wise_slot', function () {
         var days = [];
         let add_check = 1;
-        $.each($("input[name='days']:checked"), function(){
+        $.each($("input[name='days']:checked"), function () {
             days.push($(this).val());
         });
         $('input[type="text"].day_time_from').each(function () {
             if ($(this).val() == '') {
-                $.growl.error({title: '', message: please_select_time_from_txt});
+                $.growl.error({ title: '', message: please_select_time_from_txt });
                 add_check = 0;
             }
         });
         $('input[type="text"].day_time_to').each(function () {
             if ($(this).val() == '') {
-                $.growl.error({title: '', message: please_select_time_to_txt});
+                $.growl.error({ title: '', message: please_select_time_to_txt });
                 add_check = 0;
             }
         });
         $('input[type="text"].day_range_price').each(function () {
             if ($(this).val() == '') {
-                $.growl.error({title: '', message: please_enter_price_txt});
+                $.growl.error({ title: '', message: please_enter_price_txt });
                 add_check = 0;
             } else if (isNaN($(this).val())) {
-                $.growl.error({title: '', message: please_enter_valid_price_txt});
+                $.growl.error({ title: '', message: please_enter_valid_price_txt });
                 add_check = 0;
             }
         });
         $('input[type="text"].day_range_qty').each(function () {
             if ($(this).val() == '') {
-                $.growl.error({title: '', message: please_enter_qty_txt});
+                $.growl.error({ title: '', message: please_enter_qty_txt });
                 add_check = 0;
             } else if (isNaN($(this).val())) {
-                $.growl.error({title: '', message: please_enter_valid_qty_txt});
+                $.growl.error({ title: '', message: please_enter_valid_qty_txt });
                 add_check = 0;
             }
         });
         if (days.length == 0) {
-            $.growl.error({title: '', message: please_select_days_txt});
+            $.growl.error({ title: '', message: please_select_days_txt });
             add_check = 0;
         }
         if (add_check) {
             var daysWithTime = [];
             days.forEach(element => {
-                if (typeof daysWithTime[element] == 'undefined'){
+                if (typeof daysWithTime[element] == 'undefined') {
                     daysWithTime[element] = [];
                 }
-                if (typeof daysWithTime[element]['from'] == 'undefined'){
+                if (typeof daysWithTime[element]['from'] == 'undefined') {
                     daysWithTime[element]['from'] = [];
                 }
-                if (typeof daysWithTime[element]['to'] == 'undefined'){
+                if (typeof daysWithTime[element]['to'] == 'undefined') {
                     daysWithTime[element]['to'] = [];
                 }
-                if (typeof daysWithTime[element]['price'] == 'undefined'){
+                if (typeof daysWithTime[element]['price'] == 'undefined') {
                     daysWithTime[element]['price'] = [];
                 }
-                if (typeof daysWithTime[element]['qty'] == 'undefined'){
+                if (typeof daysWithTime[element]['qty'] == 'undefined') {
                     daysWithTime[element]['qty'] = [];
                 }
-                if (typeof daysWithTime[element]['status'] == 'undefined'){
+                if (typeof daysWithTime[element]['status'] == 'undefined') {
                     daysWithTime[element]['status'] = [];
                 }
 
@@ -1143,8 +1142,8 @@ $(document).ready(function() {
                     daysWithTime[element]['status'].push($(this).val());
                 });
             });
-            $.each(daysWithTime, function( index, value ) {
-                switch(index) {
+            $.each(daysWithTime, function (index, value) {
+                switch (index) {
                     case 1:
                         if (daysWithTime[1] != undefined) {
                             addMondaySlot(daysWithTime[1]);
@@ -1188,13 +1187,13 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on("click", '.slot_active_img', function(e) {
+    $(document).on("click", '.slot_active_img', function (e) {
         $(this).hide();
         $(this).closest('.slot_status_div').find('.slot_deactive_img').show();
         $(this).closest('.slot_status_div').find('.time_slot_status').val(0);
     });
 
-    $(document).on("click", '.slot_deactive_img', function(e) {
+    $(document).on("click", '.slot_deactive_img', function (e) {
         $(this).hide();
         $(this).closest('.slot_status_div').find('.slot_active_img').show();
         $(this).closest('.slot_status_div').find('.time_slot_status').val(1);
@@ -1202,9 +1201,9 @@ $(document).ready(function() {
 
     if (typeof apiKey != 'undefined' && document.getElementById('map-canvas') != null) {
         //load google map
-        setTimeout( function(){
+        setTimeout(function () {
             initialize();
-        }  , 1000 );
+        }, 1000);
     }
 
 });
@@ -1266,7 +1265,7 @@ async function initialize() {
             map,
         });
     }
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
         infowindow.close();
         // marker.setVisible(false);
         var place = autocomplete.getPlace();
@@ -1315,276 +1314,276 @@ async function initialize() {
 
 
 function addMondaySlot(row) {
-    for (i=0; i<row.from.length; i++) {
+    for (i = 0; i < row.from.length; i++) {
         var html = '<tr>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_from1[]" value="'+ row.from[i] +'">';
-                    html += '<span>'+ row.from[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_to1[]" value="'+ row.to[i] +'">';
-                    html += '<span>'+ row.to[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_price_day1[]" value="'+ row.price[i] +'">';
-                    html += '<span>'+ Number(row.price[i]) +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_qty_day1[]" value="'+ row.qty[i] +'">';
-                    html += '<span>'+ row.qty[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<div class="slot_status_div">';
-                        html += '<input type="hidden" value="'+ row.status[i] +'" name="slot_active_day1[]" class="time_slot_status">';
-                        if (row.status[i] == 1) {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-                        } else {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
-                        }
-                    html += '</div>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-                html += '</td>';
-            html += '</tr>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_from1[]" value="' + row.from[i] + '">';
+        html += '<span>' + row.from[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_to1[]" value="' + row.to[i] + '">';
+        html += '<span>' + row.to[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_price_day1[]" value="' + row.price[i] + '">';
+        html += '<span>' + Number(row.price[i]) + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_qty_day1[]" value="' + row.qty[i] + '">';
+        html += '<span>' + row.qty[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="' + row.status[i] + '" name="slot_active_day1[]" class="time_slot_status">';
+        if (row.status[i] == 1) {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        } else {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
+        }
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
 
         $('.monday_tbody').append(html);
     }
 }
 
 function addTuesdaySlot(row) {
-    for (i=0; i<row.from.length; i++) {
+    for (i = 0; i < row.from.length; i++) {
         var html = '<tr>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_from2[]" value="'+ row.from[i] +'">';
-                    html += '<span>'+ row.from[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_to2[]" value="'+ row.to[i] +'">';
-                    html += '<span>'+ row.to[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_price_day2[]" value="'+ row.price[i] +'">';
-                    html += '<span>'+ Number(row.price[i]) +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_qty_day2[]" value="'+ row.qty[i] +'">';
-                    html += '<span>'+ row.qty[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<div class="slot_status_div">';
-                        html += '<input type="hidden" value="'+ row.status[i] +'" name="slot_active_day2[]" class="time_slot_status">';
-                        if (row.status[i] == 1) {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-                        } else {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
-                        }
-                    html += '</div>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-                html += '</td>';
-            html += '</tr>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_from2[]" value="' + row.from[i] + '">';
+        html += '<span>' + row.from[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_to2[]" value="' + row.to[i] + '">';
+        html += '<span>' + row.to[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_price_day2[]" value="' + row.price[i] + '">';
+        html += '<span>' + Number(row.price[i]) + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_qty_day2[]" value="' + row.qty[i] + '">';
+        html += '<span>' + row.qty[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="' + row.status[i] + '" name="slot_active_day2[]" class="time_slot_status">';
+        if (row.status[i] == 1) {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        } else {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
+        }
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
         $('.tuesday_tbody').append(html);
     }
 }
 
 function addWednesdaySlot(row) {
-    for (i=0; i<row.from.length; i++) {
+    for (i = 0; i < row.from.length; i++) {
         var html = '<tr>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_from3[]" value="'+ row.from[i] +'">';
-                    html += '<span>'+ row.from[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_to3[]" value="'+ row.to[i] +'">';
-                    html += '<span>'+ row.to[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_price_day3[]" value="'+ row.price[i] +'">';
-                    html += '<span>'+ Number(row.price[i]) +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_qty_day3[]" value="'+ row.qty[i] +'">';
-                    html += '<span>'+ row.qty[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<div class="slot_status_div">';
-                        html += '<input type="hidden" value="'+ row.status[i] +'" name="slot_active_day3[]" class="time_slot_status">';
-                        if (row.status[i] == 1) {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-                        } else {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
-                        }
-                    html += '</div>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-                html += '</td>';
-            html += '</tr>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_from3[]" value="' + row.from[i] + '">';
+        html += '<span>' + row.from[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_to3[]" value="' + row.to[i] + '">';
+        html += '<span>' + row.to[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_price_day3[]" value="' + row.price[i] + '">';
+        html += '<span>' + Number(row.price[i]) + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_qty_day3[]" value="' + row.qty[i] + '">';
+        html += '<span>' + row.qty[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="' + row.status[i] + '" name="slot_active_day3[]" class="time_slot_status">';
+        if (row.status[i] == 1) {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        } else {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
+        }
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
         $('.wednesday_tbody').append(html);
     }
 }
 
 function addThursdaySlot(row) {
-    for (i=0; i<row.from.length; i++) {
+    for (i = 0; i < row.from.length; i++) {
         var html = '<tr>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_from4[]" value="'+ row.from[i] +'">';
-                    html += '<span>'+ row.from[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_to4[]" value="'+ row.to[i] +'">';
-                    html += '<span>'+ row.to[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_price_day4[]" value="'+ row.price[i] +'">';
-                    html += '<span>'+ Number(row.price[i]) +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_qty_day4[]" value="'+ row.qty[i] +'">';
-                    html += '<span>'+ row.qty[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<div class="slot_status_div">';
-                        html += '<input type="hidden" value="'+ row.status[i] +'" name="slot_active_day4[]" class="time_slot_status">';
-                        if (row.status[i] == 1) {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-                        } else {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
-                        }
-                    html += '</div>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-                html += '</td>';
-            html += '</tr>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_from4[]" value="' + row.from[i] + '">';
+        html += '<span>' + row.from[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_to4[]" value="' + row.to[i] + '">';
+        html += '<span>' + row.to[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_price_day4[]" value="' + row.price[i] + '">';
+        html += '<span>' + Number(row.price[i]) + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_qty_day4[]" value="' + row.qty[i] + '">';
+        html += '<span>' + row.qty[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="' + row.status[i] + '" name="slot_active_day4[]" class="time_slot_status">';
+        if (row.status[i] == 1) {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        } else {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
+        }
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
         $('.thursday_tbody').append(html);
     }
 }
 
 function addFridaySlot(row) {
-    for (i=0; i<row.from.length; i++) {
+    for (i = 0; i < row.from.length; i++) {
         var html = '<tr>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_from5[]" value="'+ row.from[i] +'">';
-                    html += '<span>'+ row.from[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_to5[]" value="'+ row.to[i] +'">';
-                    html += '<span>'+ row.to[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_price_day5[]" value="'+ row.price[i] +'">';
-                    html += '<span>'+ Number(row.price[i]) +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_qty_day5[]" value="'+ row.qty[i] +'">';
-                    html += '<span>'+ row.qty[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<div class="slot_status_div">';
-                        html += '<input type="hidden" value="'+ row.status[i] +'" name="slot_active_day5[]" class="time_slot_status">';
-                        if (row.status[i] == 1) {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-                        } else {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
-                        }
-                    html += '</div>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-                html += '</td>';
-            html += '</tr>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_from5[]" value="' + row.from[i] + '">';
+        html += '<span>' + row.from[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_to5[]" value="' + row.to[i] + '">';
+        html += '<span>' + row.to[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_price_day5[]" value="' + row.price[i] + '">';
+        html += '<span>' + Number(row.price[i]) + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_qty_day5[]" value="' + row.qty[i] + '">';
+        html += '<span>' + row.qty[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="' + row.status[i] + '" name="slot_active_day5[]" class="time_slot_status">';
+        if (row.status[i] == 1) {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        } else {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
+        }
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
         $('.friday_tbody').append(html);
     }
 }
 
 
 function addSaturdaySlot(row) {
-    for (i=0; i<row.from.length; i++) {
+    for (i = 0; i < row.from.length; i++) {
         var html = '<tr>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_from6[]" value="'+ row.from[i] +'">';
-                    html += '<span>'+ row.from[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_to6[]" value="'+ row.to[i] +'">';
-                    html += '<span>'+ row.to[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_price_day6[]" value="'+ row.price[i] +'">';
-                    html += '<span>'+ Number(row.price[i]) +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_qty_day6[]" value="'+ row.qty[i] +'">';
-                    html += '<span>'+ row.qty[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<div class="slot_status_div">';
-                        html += '<input type="hidden" value="'+ row.status[i] +'" name="slot_active_day6[]" class="time_slot_status">';
-                        if (row.status[i] == 1) {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-                        } else {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
-                        }
-                    html += '</div>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-                html += '</td>';
-            html += '</tr>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_from6[]" value="' + row.from[i] + '">';
+        html += '<span>' + row.from[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_to6[]" value="' + row.to[i] + '">';
+        html += '<span>' + row.to[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_price_day6[]" value="' + row.price[i] + '">';
+        html += '<span>' + Number(row.price[i]) + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_qty_day6[]" value="' + row.qty[i] + '">';
+        html += '<span>' + row.qty[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="' + row.status[i] + '" name="slot_active_day6[]" class="time_slot_status">';
+        if (row.status[i] == 1) {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        } else {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
+        }
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
         $('.saturday_tbody').append(html);
     }
 }
 
 function addSundaySlot(row) {
-    for (i=0; i<row.from.length; i++) {
+    for (i = 0; i < row.from.length; i++) {
         var html = '<tr>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_from7[]" value="'+ row.from[i] +'">';
-                    html += '<span>'+ row.from[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="booking_time_day_to7[]" value="'+ row.to[i] +'">';
-                    html += '<span>'+ row.to[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_price_day7[]" value="'+ row.price[i] +'">';
-                    html += '<span>'+ Number(row.price[i]) +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<input type="hidden" name="slot_range_qty_day7[]" value="'+ row.qty[i] +'">';
-                    html += '<span>'+ row.qty[i] +'</span>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<div class="slot_status_div">';
-                        html += '<input type="hidden" value="'+ row.status[i] +'" name="slot_active_day7[]" class="time_slot_status">';
-                        if (row.status[i] == 1) {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
-                        } else {
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
-                            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
-                        }
-                    html += '</div>';
-                html += '</td>';
-                html += '<td class="center">';
-                    html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
-                html += '</td>';
-            html += '</tr>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_from7[]" value="' + row.from[i] + '">';
+        html += '<span>' + row.from[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="booking_time_day_to7[]" value="' + row.to[i] + '">';
+        html += '<span>' + row.to[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_price_day7[]" value="' + row.price[i] + '">';
+        html += '<span>' + Number(row.price[i]) + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<input type="hidden" name="slot_range_qty_day7[]" value="' + row.qty[i] + '">';
+        html += '<span>' + row.qty[i] + '</span>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<div class="slot_status_div">';
+        html += '<input type="hidden" value="' + row.status[i] + '" name="slot_active_day7[]" class="time_slot_status">';
+        if (row.status[i] == 1) {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" style="display:none;" class="slot_deactive_img">';
+        } else {
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-check.png" style="display:none;" class="slot_active_img">';
+            html += '<img src="' + module_dir + 'psbooking/views/img/icon/icon-close.png" class="slot_deactive_img">';
+        }
+        html += '</div>';
+        html += '</td>';
+        html += '<td class="center">';
+        html += '<a href="#" class="remove_time_slot btn btn-default"><i class="icon-trash"></i></a>';
+        html += '</td>';
+        html += '</tr>';
         $('.sunday_tbody').append(html);
     }
 }
@@ -1611,7 +1610,7 @@ function highlightDateBorder(elementVal, date) {
         }
         dmy = date.getFullYear() + "-" + currentMonth + "-" + currentDate;
         var date_format = elementVal.split("-");
-        var check_in_time = (date_format[2]) + '-' + (date_format[1]) + '-' + (date_format[0]);
+        var check_in_time = (date_format[2]) + '-' + (date_format[0]) + '-' + (date_format[1]);
         if (dmy == check_in_time) {
             return [true, "selectedCheckedDate", "Check-In date"];
         } else {
@@ -1622,13 +1621,12 @@ function highlightDateBorder(elementVal, date) {
     }
 }
 
-function showProdLangField(select_lang_name, id_lang)
-{
+function showProdLangField(select_lang_name, id_lang) {
     $('.wk_text_field_all').hide();
     $('.wk_text_field_' + id_lang).show();
 
 
-    $('.all_lang_icon').attr('src', img_dir_l+id_lang+'.jpg');
+    $('.all_lang_icon').attr('src', img_dir_l + id_lang + '.jpg');
     $('#choosedLangId').val(id_lang);
     $('#seller_lang_btn').val(id_lang);
     $('#seller_lang_btn_text').text(select_lang_name);
@@ -1636,7 +1634,7 @@ function showProdLangField(select_lang_name, id_lang)
 }
 
 // To initialize the popover
-$(function() {
+$(function () {
     $('[data-toggle="popover"]').popover();
     // To add our class on changing links of months to seperate from other datepickers
     $('#stats-calendar-info .ui-datepicker-next, #stats-calendar-info .ui-datepicker-prev').addClass('calendar_change_month_link');

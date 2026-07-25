@@ -46,7 +46,7 @@ class AdminBookingProductController extends ModuleAdminController
         ];
         $this->_join .= 'JOIN `' . _DB_PREFIX_ . 'product` p ON (p.`id_product` = a.`id_product`)';
         $this->_join .= 'LEFT JOIN `' . _DB_PREFIX_ . 'product_lang` pl ON (pl.`id_product` = a.`id_product` AND pl.`id_lang`=' .
-        (int) $this->context->language->id . ' AND pl.`id_shop` =' . (int) $this->context->shop->id . ')';
+            (int) $this->context->language->id . ' AND pl.`id_shop` =' . (int) $this->context->shop->id . ')';
         $this->_join .= 'JOIN `' . _DB_PREFIX_ . 'product_shop` sa ON (p.`id_product` = sa.`id_product` AND sa.id_shop =' . (int) $this->context->shop->id . ')';
         $this->_select = 'pl.`link_rewrite` as link_rewrite, pl.`name` as name, pl.`id_product` as temp_ps_id';
         // if (Shop::isFeatureActive() && Shop::getContext() == Shop::CONTEXT_ALL) {
@@ -159,7 +159,7 @@ class AdminBookingProductController extends ModuleAdminController
                 $adminDir = dirname($_SERVER['PHP_SELF']);
                 $adminDir = Tools::substr($adminDir, strrpos($adminDir, '/') + 1);
                 $productPreviewLink .= ((strpos($productPreviewLink, '?') === false) ? '?' : '&') . 'adtoken=' . $token .
-                '&ad=' . $adminDir . '&id_employee=' . (int) $this->context->employee->id;
+                    '&ad=' . $adminDir . '&id_employee=' . (int) $this->context->employee->id;
             }
             $context = Context::getContext();
             $context->smarty->assign('productPreviewLink', $productPreviewLink);
@@ -236,8 +236,8 @@ class AdminBookingProductController extends ModuleAdminController
     {
         $objCurrency = new Currency((int) Configuration::get('PS_CURRENCY_DEFAULT'));
         $currencySign = $objCurrency->sign;
-        $dateFrom = date('d-m-Y');
-        $dateTo = date('d-m-Y', strtotime('+1 day', strtotime($dateFrom)));
+        $dateFrom = date('m-d-Y');
+        $dateTo = date('m-d-Y', strtotime('+1 day', strtotime($dateFrom)));
         $timeFrom = date('H:i');
         $timeTo = date('H:i', strtotime('1 hour'));
         // tinymce setup
@@ -304,10 +304,10 @@ class AdminBookingProductController extends ModuleAdminController
                     if ($eventData) {
                         $eventObj = new WkBookingProductExtraInfo((int) $eventData['id']);
                         if (isset($eventData['date_from'])) {
-                            $eventData['date_from'] = date('d-m-Y', strtotime($eventData['date_from']));
+                            $eventData['date_from'] = date('m-d-Y', strtotime($eventData['date_from']));
                         }
                         if (isset($eventData['date_to'])) {
-                            $eventData['date_to'] = date('d-m-Y', strtotime($eventData['date_to']));
+                            $eventData['date_to'] = date('m-d-Y', strtotime($eventData['date_to']));
                         }
                         $bkingProdTimeSlotsObj = new WkBookingProductTimeSlotPrices();
                         $bkingProdTimeSlots = $bkingProdTimeSlotsObj->getProductAllTimeSlotsFormatted($idProduct);
@@ -316,7 +316,7 @@ class AdminBookingProductController extends ModuleAdminController
                             $this->context->smarty->assign('eventBannerImg', 1);
                         }
                         $this->context->smarty->assign(
-                            ['eventData' => $eventObj, 'bookingProductTimeSlots' => $bkingProdTimeSlots,  'time' => time(), 'id_shop' => $this->context->shop->id],
+                            ['eventData' => $eventObj, 'bookingProductTimeSlots' => $bkingProdTimeSlots, 'time' => time(), 'id_shop' => $this->context->shop->id],
                         );
                     }
                 }
@@ -342,8 +342,8 @@ class AdminBookingProductController extends ModuleAdminController
                 // Data to show rates/Availability information on the calendar (Availability & Rates Tab)
                 $bookingCalendarData = [];
                 if (Tools::isSubmit('availability-search-submit')) {
-                    $dateFrom = Tools::getValue('date_from');
-                    $availablityDateTo = Tools::getValue('date_to');
+                    $dateFrom = str_replace('-', '/', Tools::getValue('date_from'));
+                    $availablityDateTo = str_replace('-', '/', Tools::getValue('date_to'));
 
                     $dateFrom = date('Y-m-d', strtotime($dateFrom));
                     $availablityDateTo = date('Y-m-d', strtotime($availablityDateTo));
@@ -550,7 +550,8 @@ class AdminBookingProductController extends ModuleAdminController
                 if ($keyTimeFrom == $keyTime) {
                     break;
                 } else {
-                    if (strtotime($tmFrm) <= strtotime($chkTmTo)
+                    if (
+                        strtotime($tmFrm) <= strtotime($chkTmTo)
                         && strtotime($bookingTimeTos[$keyTimeFrom]) >= strtotime($timeSlotFrom)
                     ) {
                         $errorMSg = $this->module->l('Duplicate time slots data not saved ', 'AdminBookingProductController');
@@ -588,14 +589,17 @@ class AdminBookingProductController extends ModuleAdminController
             if (count($errorList)) {
                 continue; // if duplicate time slot dont proceed
             }
-            if ($tmFrm
+            if (
+                $tmFrm
                 && $bookingTimeTos[$keyTimeFrom]
             ) {
                 if ($tmFrm < $bookingTimeTos[$keyTimeFrom]) {
                     if (Validate::isUnsignedInt($slotRangeQty[$keyTimeFrom])) {
-                        if (Validate::isPrice(
-                            $slotRangePrices[$keyTimeFrom],
-                        )) {
+                        if (
+                            Validate::isPrice(
+                                $slotRangePrices[$keyTimeFrom],
+                            )
+                        ) {
                             $wkTimeSlotPrices = new WkBookingProductTimeSlotPrices();
                             $wkTimeSlotPrices->id_product = $idProduct;
                             $wkTimeSlotPrices->slot_day = $day;
@@ -624,7 +628,7 @@ class AdminBookingProductController extends ModuleAdminController
                                 $errorMSg .= $this->module->l(' for sunday ', 'AdminBookingProductController');
                             }
                             $errorMSg .= $this->module->l(' not saved because of invalid price : ', 'AdminBookingProductController')
-                            . $slotRangePrices[$keyTimeFrom];
+                                . $slotRangePrices[$keyTimeFrom];
                             $errorList[] = $errorMSg;
                             $this->errors[] = $errorMSg;
                         }
@@ -684,7 +688,8 @@ class AdminBookingProductController extends ModuleAdminController
         $idShop = $context->shop->id;
         $path = _PS_MODULE_DIR_ . 'psbooking/views/img/event/';
         $source_index = _PS_MODULE_DIR_ . 'psbooking/index.php';
-        if (is_uploaded_file($_FILES['event_banner']['tmp_name'])
+        if (
+            is_uploaded_file($_FILES['event_banner']['tmp_name'])
         ) {
             // $img_name = $id.'_blog.jpg';
             if (!file_exists($path . '/' . $idProduct)) {
@@ -693,8 +698,9 @@ class AdminBookingProductController extends ModuleAdminController
             }
             $img_name = $idProduct . '_' . $idShop . 'banner.jpg';
             $tmpName = tempnam(_PS_TMP_IMG_DIR_, 'PS');
-            if (!$tmpName || (
-                !move_uploaded_file($_FILES['event_banner']['tmp_name'], $tmpName))
+            if (
+                !$tmpName || (
+                    !move_uploaded_file($_FILES['event_banner']['tmp_name'], $tmpName))
             ) {
                 return false;
             } elseif (!ImageManager::resize($tmpName, $path . '/' . $idProduct . '/' . $img_name)) {
@@ -708,8 +714,10 @@ class AdminBookingProductController extends ModuleAdminController
         if (is_array($image_name)) {
             $img_name = $image_name['name'];
             $tmp_name = $image_name['tmp_name'];
-            if (!ImageManager::isCorrectImageFileExt($img_name)
-                || !ImageManager::isRealImage($tmp_name)) {
+            if (
+                !ImageManager::isCorrectImageFileExt($img_name)
+                || !ImageManager::isRealImage($tmp_name)
+            ) {
                 return false;
             } else {
                 return true;
@@ -946,7 +954,8 @@ class AdminBookingProductController extends ModuleAdminController
                     );
                     $slotRangeId = Tools::getValue('time_slot_id' . $keyDtFrm);
                     $slotActive = Tools::getValue('slot_active' . $keyDtFrm);
-                    if (isset($bookingTmFrm[0])
+                    if (
+                        isset($bookingTmFrm[0])
                         && $bookingTmFrm[0]
                         && $bookingTimeTo
                         && $slotRangePrice
@@ -959,7 +968,8 @@ class AdminBookingProductController extends ModuleAdminController
                                 if ($keyTimeFrom == $keyTime) {
                                     break;
                                 } else {
-                                    if (strtotime($tmFrm) < strtotime($chkTmTo)
+                                    if (
+                                        strtotime($tmFrm) < strtotime($chkTmTo)
                                         && strtotime($bookingTimeTo[$keyTimeFrom]) > strtotime($timeSlotFrom)
                                     ) {
                                         $this->errors[] = $this->module->l('Duplicate time slots data not saved.', 'AdminBookingProductController');
@@ -980,15 +990,19 @@ class AdminBookingProductController extends ModuleAdminController
                             if (count($this->errors)) {
                                 continue; // if duplicate time slot dont proceed
                             }
-                            if ($tmFrm
+                            if (
+                                $tmFrm
                                 && $bookingTimeTo[$keyTimeFrom]
                             ) {
                                 if ($tmFrm < $bookingTimeTo[$keyTimeFrom]) {
                                     if (Validate::isUnsignedInt($slotRangeQty[$keyTimeFrom])) {
-                                        if (Validate::isPrice(
-                                            $slotRangePrice[$keyTimeFrom],
-                                        )) {
-                                            if (isset($slotRangeId[$keyTimeFrom])
+                                        if (
+                                            Validate::isPrice(
+                                                $slotRangePrice[$keyTimeFrom],
+                                            )
+                                        ) {
+                                            if (
+                                                isset($slotRangeId[$keyTimeFrom])
                                                 && $slotRangeId[$keyTimeFrom]
                                             ) {
                                                 $wkTimeSlotPrices = new WkBookingProductTimeSlotPrices(
@@ -1015,33 +1029,33 @@ class AdminBookingProductController extends ModuleAdminController
                                             $wkTimeSlotPrices->save();
                                         } else {
                                             $this->errors[] = $this->module->l('Time slot ', 'AdminBookingProductController') .
+                                                $tmFrm .
+                                                $this->module->l(' to ', 'AdminBookingProductController') .
+                                                $bookingTimeTo[$keyTimeFrom] .
+                                                $this->module->l(' for the date ', 'AdminBookingProductController') .
+                                                date('Y-m-d', strtotime($dateFrom)) .
+                                                $this->module->l(' not saved because of invalid price', 'AdminBookingProductController');
+                                        }
+                                    } else {
+                                        $this->errors[] = $this->module->l('Time Slot ', 'AdminBookingProductController') .
                                             $tmFrm .
                                             $this->module->l(' to ', 'AdminBookingProductController') .
                                             $bookingTimeTo[$keyTimeFrom] .
                                             $this->module->l(' for the date ', 'AdminBookingProductController') .
                                             date('Y-m-d', strtotime($dateFrom)) .
-                                            $this->module->l(' not saved because of invalid price', 'AdminBookingProductController');
-                                        }
-                                    } else {
-                                        $this->errors[] = $this->module->l('Time Slot ', 'AdminBookingProductController') .
-                                        $tmFrm .
-                                        $this->module->l(' to ', 'AdminBookingProductController') .
-                                        $bookingTimeTo[$keyTimeFrom] .
-                                        $this->module->l(' for the date ', 'AdminBookingProductController') .
-                                        date('Y-m-d', strtotime($dateFrom)) .
-                                        $this->module->l(' not saved because of invalid quantity : ', 'AdminBookingProductController');
+                                            $this->module->l(' not saved because of invalid quantity : ', 'AdminBookingProductController');
                                     }
                                 } else {
                                     $this->errors[] = $this->module->l('Time slot ', 'AdminBookingProductController') .
-                                    $tmFrm .
-                                    $this->module->l(' to ', 'AdminBookingProductController') . $bookingTimeTo[$keyTimeFrom] .
-                                    $this->module->l(' for the date ', 'AdminBookingProductController') .
-                                    date('Y-m-d', strtotime($dateFrom)) .
-                                    $this->module->l(' not saved because of invalid time slots.', 'AdminBookingProductController');
+                                        $tmFrm .
+                                        $this->module->l(' to ', 'AdminBookingProductController') . $bookingTimeTo[$keyTimeFrom] .
+                                        $this->module->l(' for the date ', 'AdminBookingProductController') .
+                                        date('Y-m-d', strtotime($dateFrom)) .
+                                        $this->module->l(' not saved because of invalid time slots.', 'AdminBookingProductController');
                                 }
                             } else {
                                 $this->errors[] = $this->module->l('Time slot not saved ', 'AdminBookingProductController')
-                                . $this->module->l('because of missing info of time slots.', 'AdminBookingProductController');
+                                    . $this->module->l('because of missing info of time slots.', 'AdminBookingProductController');
                             }
                         }
                     }
@@ -1076,7 +1090,8 @@ class AdminBookingProductController extends ModuleAdminController
                             );
                             $slotRangeId = Tools::getValue('time_slot_id' . $keyDtFrm);
                             $slotActive = Tools::getValue('slot_active' . $keyDtFrm);
-                            if (isset($bookingTmFrm[0])
+                            if (
+                                isset($bookingTmFrm[0])
                                 && $bookingTmFrm[0]
                                 && $bookingTimeTo
                                 && $slotRangePrice
@@ -1089,7 +1104,8 @@ class AdminBookingProductController extends ModuleAdminController
                                         if ($keyTimeFrom == $keyTime) {
                                             break;
                                         } else {
-                                            if (strtotime($tmFrm) < strtotime($chkTmTo)
+                                            if (
+                                                strtotime($tmFrm) < strtotime($chkTmTo)
                                                 && strtotime($bookingTimeTo[$keyTimeFrom]) > strtotime($timeSlotFrom)
                                             ) {
                                                 $this->errors[] = $this->module->l('Duplicate time slots data not saved.', 'AdminBookingProductController');
@@ -1110,15 +1126,19 @@ class AdminBookingProductController extends ModuleAdminController
                                     if (count($this->errors)) {
                                         continue; // if duplicate time slot dont proceed
                                     }
-                                    if ($tmFrm
+                                    if (
+                                        $tmFrm
                                         && $bookingTimeTo[$keyTimeFrom]
                                     ) {
                                         if ($tmFrm < $bookingTimeTo[$keyTimeFrom]) {
                                             if (Validate::isUnsignedInt($slotRangeQty[$keyTimeFrom])) {
-                                                if (Validate::isPrice(
-                                                    $slotRangePrice[$keyTimeFrom],
-                                                )) {
-                                                    if (isset($slotRangeId[$keyTimeFrom])
+                                                if (
+                                                    Validate::isPrice(
+                                                        $slotRangePrice[$keyTimeFrom],
+                                                    )
+                                                ) {
+                                                    if (
+                                                        isset($slotRangeId[$keyTimeFrom])
                                                         && $slotRangeId[$keyTimeFrom]
                                                     ) {
                                                         $wkTimeSlotPrices = new WkBookingProductTimeSlotPrices(
@@ -1145,46 +1165,46 @@ class AdminBookingProductController extends ModuleAdminController
                                                     $wkTimeSlotPrices->save();
                                                 } else {
                                                     $this->errors[] = $this->module->l('Time slot ', 'AdminBookingProductController') .
+                                                        $tmFrm .
+                                                        $this->module->l(' to ', 'AdminBookingProductController') .
+                                                        $bookingTimeTo[$keyTimeFrom] .
+                                                        $this->module->l(' for the date range ', 'AdminBookingProductController') .
+                                                        date('Y-m-d', strtotime($dateFrom)) .
+                                                        $this->module->l(' to ', 'AdminBookingProductController')
+                                                        . date(
+                                                            'Y-m-d',
+                                                            strtotime($slotingDateTo[$keyDtFrm]),
+                                                        ) .
+                                                        $this->module->l(' not saved because of invalid price', 'AdminBookingProductController');
+                                                }
+                                            } else {
+                                                $this->errors[] = $this->module->l('Time Slot ', 'AdminBookingProductController') .
                                                     $tmFrm .
                                                     $this->module->l(' to ', 'AdminBookingProductController') .
                                                     $bookingTimeTo[$keyTimeFrom] .
                                                     $this->module->l(' for the date range ', 'AdminBookingProductController') .
                                                     date('Y-m-d', strtotime($dateFrom)) .
-                                                    $this->module->l(' to ', 'AdminBookingProductController')
+                                                    $this->module->l(' To ', 'AdminBookingProductController')
                                                     . date(
                                                         'Y-m-d',
                                                         strtotime($slotingDateTo[$keyDtFrm]),
                                                     ) .
-                                                    $this->module->l(' not saved because of invalid price', 'AdminBookingProductController');
-                                                }
-                                            } else {
-                                                $this->errors[] = $this->module->l('Time Slot ', 'AdminBookingProductController') .
-                                                $tmFrm .
-                                                $this->module->l(' to ', 'AdminBookingProductController') .
-                                                $bookingTimeTo[$keyTimeFrom] .
-                                                $this->module->l(' for the date range ', 'AdminBookingProductController') .
-                                                date('Y-m-d', strtotime($dateFrom)) .
-                                                $this->module->l(' To ', 'AdminBookingProductController')
-                                                . date(
-                                                    'Y-m-d',
-                                                    strtotime($slotingDateTo[$keyDtFrm]),
-                                                ) .
-                                                $this->module->l(' not saved because of invalid quantity', 'AdminBookingProductController');
+                                                    $this->module->l(' not saved because of invalid quantity', 'AdminBookingProductController');
                                             }
                                         } else {
                                             $this->errors[] = $this->module->l('Time slot ', 'AdminBookingProductController') .
-                                            $tmFrm .
-                                            $this->module->l(' to ', 'AdminBookingProductController') . $bookingTimeTo[$keyTimeFrom] .
-                                            $this->module->l(' for the date range ', 'AdminBookingProductController') .
-                                            date('Y-m-d', strtotime($dateFrom)) .
-                                            $this->module->l(' to ', 'AdminBookingProductController') . date(
+                                                $tmFrm .
+                                                $this->module->l(' to ', 'AdminBookingProductController') . $bookingTimeTo[$keyTimeFrom] .
+                                                $this->module->l(' for the date range ', 'AdminBookingProductController') .
+                                                date('Y-m-d', strtotime($dateFrom)) .
+                                                $this->module->l(' to ', 'AdminBookingProductController') . date(
                                                 'Y-m-d',
                                                 strtotime($slotingDateTo[$keyDtFrm]),
                                             ) . $this->module->l(' not saved because of invalid time slots.', 'AdminBookingProductController');
                                         }
                                     } else {
                                         $this->errors[] = $this->module->l('Time slot not saved ', 'AdminBookingProductController')
-                                        . $this->module->l('because of missing info of time slots.', 'AdminBookingProductController');
+                                            . $this->module->l('because of missing info of time slots.', 'AdminBookingProductController');
                                     }
                                 }
                             }
@@ -1214,7 +1234,8 @@ class AdminBookingProductController extends ModuleAdminController
             $conf = 3;
         }
         // if admin will submit the time slots of the booking product
-        if (Tools::isSubmit('submitAddwk_booking_product_infoAndStay')
+        if (
+            Tools::isSubmit('submitAddwk_booking_product_infoAndStay')
             || Tools::isSubmit('submitAddwk_booking_product_info')
         ) {
             $this->validateBookingProductDetails();
@@ -1280,13 +1301,13 @@ class AdminBookingProductController extends ModuleAdminController
                         if ($toDisableSpecialDays) {
                             if (!$dsbldSpclDays) {
                                 $this->errors[] = $this->module->l('If disable special days is active, ', 'AdminBookingProductController')
-                                . $this->module->l(' Please select at least one special day to disable.', 'AdminBookingProductController');
+                                    . $this->module->l(' Please select at least one special day to disable.', 'AdminBookingProductController');
                             }
                         }
                         if ($toDisableDates) {
                             if (!$disabledSpecificDatesJson || !count(json_decode($disabledSpecificDatesJson, true))) {
                                 $this->errors[] = $this->module->l('If disable specific dates is active, ', 'AdminBookingProductController')
-                                . $this->module->l(' Please select at least one date to disable.', 'AdminBookingProductController');
+                                    . $this->module->l(' Please select at least one date to disable.', 'AdminBookingProductController');
                             }
                         }
                     }
@@ -1300,9 +1321,9 @@ class AdminBookingProductController extends ModuleAdminController
                         $objBookingDisableDates->disabled_dates_slots_active = $toDisableDates;
                         $objBookingDisableDates->id_product = $idProduct;
                         $objBookingDisableDates->disabled_special_days = (isset($dsbldSpclDays) && $dsbldSpclDays ?
-                         json_encode($dsbldSpclDays) : 0);
+                            json_encode($dsbldSpclDays) : 0);
                         $objBookingDisableDates->disabled_dates_slots = (isset($disabledSpecificDatesJson)
-                        && $disabledSpecificDatesJson ? $disabledSpecificDatesJson : 0);
+                            && $disabledSpecificDatesJson ? $disabledSpecificDatesJson : 0);
                         if ($objBookingDisableDates->save()) {
                             if (Tools::isSubmit('submitAddwk_booking_product_infoAndStay')) {
                                 Tools::redirectAdmin(
@@ -1324,7 +1345,7 @@ class AdminBookingProductController extends ModuleAdminController
                         );
                         // if product is saved but some errors are occurred while saving time slots information
                         $this->confirmations[] = $this->module->l('Product has been saved successfully. ', 'AdminBookingProductController')
-                        . $this->module->l(' But above errors were occurred while saving time slots information.', 'AdminBookingProductController');
+                            . $this->module->l(' But above errors were occurred while saving time slots information.', 'AdminBookingProductController');
                         if ($id) {
                             $this->display = 'edit';
                         } else {
@@ -1370,9 +1391,11 @@ class AdminBookingProductController extends ModuleAdminController
             $product->description_short[$lang['id_lang']] = Tools::getValue(
                 'description_short' . $lang['id_lang'],
             );
-            if (Tools::getValue(
-                'name' . $lang['id_lang'],
-            )) {
+            if (
+                Tools::getValue(
+                    'name' . $lang['id_lang'],
+                )
+            ) {
                 $product->link_rewrite[$lang['id_lang']] = Tools::str2url(trim(Tools::getValue(
                     'name' . $lang['id_lang'],
                 )));
@@ -1587,41 +1610,51 @@ class AdminBookingProductController extends ModuleAdminController
                 }
             }
             foreach ($langulages as $langulage) {
-                if (!Validate::isCatalogName(Tools::getValue(
-                    'event_lang' . $langulage['id_lang'],
-                ))) {
+                if (
+                    !Validate::isCatalogName(Tools::getValue(
+                        'event_lang' . $langulage['id_lang'],
+                    ))
+                ) {
                     $this->errors[] = sprintf(
                         $this->module->l('Event language must not have invalid characters <>;=#{} in %s language.', 'AdminBookingProductController'),
                         $langulage['name'],
                     );
                 }
-                if (!Validate::isCatalogName(Tools::getValue(
-                    'event_lang' . $langulage['id_lang'],
-                ))) {
+                if (
+                    !Validate::isCatalogName(Tools::getValue(
+                        'event_lang' . $langulage['id_lang'],
+                    ))
+                ) {
                     $this->errors[] = sprintf(
                         $this->module->l('Event age group must not have invalid characters <>;=#{} in %s language.', 'AdminBookingProductController'),
                         $langulage['name'],
                     );
                 }
-                if (!Validate::isCatalogName(Tools::getValue(
-                    'artist' . $langulage['id_lang'],
-                ))) {
+                if (
+                    !Validate::isCatalogName(Tools::getValue(
+                        'artist' . $langulage['id_lang'],
+                    ))
+                ) {
                     $this->errors[] = sprintf(
                         $this->module->l('Event artist must not have invalid characters <>;=#{} in %s language.', 'AdminBookingProductController'),
                         $langulage['name'],
                     );
                 }
-                if (!Validate::isCatalogName(Tools::getValue(
-                    'organized_by' . $langulage['id_lang'],
-                ))) {
+                if (
+                    !Validate::isCatalogName(Tools::getValue(
+                        'organized_by' . $langulage['id_lang'],
+                    ))
+                ) {
                     $this->errors[] = sprintf(
                         $this->module->l('Event organized by must not have invalid characters <>;=#{} in %s language.', 'AdminBookingProductController'),
                         $langulage['name'],
                     );
                 }
-                if (!Validate::isCatalogName(Tools::getValue(
-                    'event_category' . $langulage['id_lang'],
-                ))) {
+                if (
+                    !Validate::isCatalogName(Tools::getValue(
+                        'event_category' . $langulage['id_lang'],
+                    ))
+                ) {
                     $this->errors[] = sprintf(
                         $this->module->l('Event category must not have invalid characters <>;=#{} in %s language.', 'AdminBookingProductController'),
                         $langulage['name'],
@@ -1762,8 +1795,8 @@ class AdminBookingProductController extends ModuleAdminController
 
     public function ajaxProcessGetDateRangeAvailableBookingSlots()
     {
-        $dateFrom = Tools::getValue('date_from');
-        $dateTo = Tools::getValue('date_to');
+        $dateFrom = str_replace('-', '/', Tools::getValue('date_from'));
+        $dateTo = str_replace('-', '/', Tools::getValue('date_to'));
         $idProduct = Tools::getValue('id_product');
         $result = [];
         if (!$dateFrom) {
@@ -1857,7 +1890,7 @@ class AdminBookingProductController extends ModuleAdminController
             }
         } else {
             $this->errors[] = $this->module->l('An error occurred while updating status for an object.', 'AdminBookingProductController') .
-            ' ' . $this->table . ' ' . $this->module->l('(can not load object)', 'AdminBookingProductController');
+                ' ' . $this->table . ' ' . $this->module->l('(can not load object)', 'AdminBookingProductController');
         }
 
         return parent::processStatus();

@@ -117,7 +117,8 @@ class WkBookingProductTimeSlotPrices extends ObjectModel
 
                 $underDisabledays = 0;
                 if ($bookingDisableDates) {
-                    if ($bookingDisableDates['disable_special_days_active']
+                    if (
+                        $bookingDisableDates['disable_special_days_active']
                         && $bookingDisableDates['disabled_special_days']
                     ) {
                         $disabledDays = json_decode($bookingDisableDates['disabled_special_days'], true);
@@ -134,24 +135,28 @@ class WkBookingProductTimeSlotPrices extends ObjectModel
                 $bookingBefore = $bookingProductInformation['booking_before'];
 
                 foreach ($timeSlots as $key => $slot) {
-                    if (isset($bookingDisableDates['disabled_dates_slots_active'], $bookingDisableDates['disabled_dates_slots'])
-                          && $bookingDisableDates['disabled_dates_slots_active'] && $bookingDisableDates['disabled_dates_slots']
+                    if (
+                        isset($bookingDisableDates['disabled_dates_slots_active'], $bookingDisableDates['disabled_dates_slots'])
+                        && $bookingDisableDates['disabled_dates_slots_active'] && $bookingDisableDates['disabled_dates_slots']
                     ) {
                         $bookingDisableDatesArray = json_decode(
                             $bookingDisableDates['disabled_dates_slots'],
                             true,
                         );
                         foreach ($bookingDisableDatesArray as $disableDateRange) {
-                            if (($dateFrom = $disableDateRange['date_from'])
+                            if (
+                                ($dateFrom = $disableDateRange['date_from'])
                                 && ($dateTo = $disableDateRange['date_to'])
                             ) {
-                                if (strtotime($dateFrom) <= strtotime($date)
+                                if (
+                                    strtotime($dateFrom) <= strtotime($date)
                                     && strtotime($dateTo) >= strtotime($date)
                                 ) {
                                     if (isset($disableDateRange['slots_info'])) {
                                         if (count($disableDateRange['slots_info'])) {
                                             foreach ($disableDateRange['slots_info'] as $slotInfo) {
-                                                if ($slotInfo['time_from'] == $slot['time_slot_from']
+                                                if (
+                                                    $slotInfo['time_from'] == $slot['time_slot_from']
                                                     && $slotInfo['time_to'] == $slot['time_slot_to']
                                                 ) {
                                                     $timeSlots[$key]['active'] = 0;
@@ -177,7 +182,8 @@ class WkBookingProductTimeSlotPrices extends ObjectModel
                     if ($underDisabledays) {
                         $timeSlots[$key]['active'] = 0;
                     }
-                    if (($status == 1 && !$timeSlots[$key]['active'])
+                    if (
+                        ($status == 1 && !$timeSlots[$key]['active'])
                         || ($status == 0 && $timeSlots[$key]['active'])
                     ) {
                         unset($timeSlots[$key]);
@@ -384,9 +390,9 @@ class WkBookingProductTimeSlotPrices extends ObjectModel
             foreach ($timeSlots as $key => $timeSlot) {
                 if ($timeSlot['time_slot_type'] == WkBookingProductTimeSlotPrices::TIME_SLOT_TYPE_DATE || $timeSlot['time_slot_type'] == WkBookingProductTimeSlotPrices::TIME_SLOT_EVENT_TYPE) {
                     $date_key = date('Y-m-d', strtotime($timeSlot['date_from'])) . '_' .
-                    date('Y-m-d', strtotime($timeSlot['date_to']));
-                    $timeSlotsFormatted[$date_key]['date_from'] = date('d-m-Y', strtotime($timeSlot['date_from']));
-                    $timeSlotsFormatted[$date_key]['date_to'] = date('d-m-Y', strtotime($timeSlot['date_to']));
+                        date('Y-m-d', strtotime($timeSlot['date_to']));
+                    $timeSlotsFormatted[$date_key]['date_from'] = date('m-d-Y', strtotime($timeSlot['date_from']));
+                    $timeSlotsFormatted[$date_key]['date_to'] = date('m-d-Y', strtotime($timeSlot['date_to']));
                     $timeSlotsFormatted[$date_key]['id_product'] = $timeSlot['id_product'];
                     $timeSlotsFormatted[$date_key]['time_slot_type'] = $timeSlot['time_slot_type'];
                     $timeSlotsFormatted[$date_key]['time_slots'][$key]['time_from'] = $timeSlot['time_slot_from'];
@@ -397,8 +403,8 @@ class WkBookingProductTimeSlotPrices extends ObjectModel
                     $timeSlotsFormatted[$date_key]['time_slots'][$key]['active'] = $timeSlot['active'];
                 } else {
                     $day_key = $timeSlot['slot_day'];
-                    $timeSlotsFormatted[$day_key]['date_from'] = date('d-m-Y', strtotime($timeSlot['date_from']));
-                    $timeSlotsFormatted[$day_key]['date_to'] = date('d-m-Y', strtotime($timeSlot['date_to']));
+                    $timeSlotsFormatted[$day_key]['date_from'] = date('m-d-Y', strtotime($timeSlot['date_from']));
+                    $timeSlotsFormatted[$day_key]['date_to'] = date('m-d-Y', strtotime($timeSlot['date_to']));
                     $timeSlotsFormatted[$day_key]['id_product'] = $timeSlot['id_product'];
                     $timeSlotsFormatted[$day_key]['time_slot_type'] = $timeSlot['time_slot_type'];
                     $timeSlotsFormatted[$day_key]['time_slots'][$key]['time_from'] = $timeSlot['time_slot_from'];
@@ -537,13 +543,14 @@ class WkBookingProductTimeSlotPrices extends ObjectModel
                 $dayString .= $moduleInstance->l(' Sunday ', 'WkBookingProductTimeSlotPrices');
             }
             foreach ($timSlotsInfo as $timeSlotRow) {
-                if ((strtotime($timeFrom) <= strtotime($timeSlotRow['time_slot_to']))
+                if (
+                    (strtotime($timeFrom) <= strtotime($timeSlotRow['time_slot_to']))
                     && (strtotime($timeto) >= strtotime($timeSlotRow['time_slot_from']))
                 ) {
                     $error = $moduleInstance->l('Time slot ', 'WkBookingProductTimeSlotPrices') . $timeFrom .
-                    $moduleInstance->l(' to ', 'WkBookingProductTimeSlotPrices') . $timeto .
-                    $moduleInstance->l(' for', 'WkBookingProductTimeSlotPrices') . $dayString .
-                    $moduleInstance->l(' not saved because of duplicacy.', 'WkBookingProductTimeSlotPrices');
+                        $moduleInstance->l(' to ', 'WkBookingProductTimeSlotPrices') . $timeto .
+                        $moduleInstance->l(' for', 'WkBookingProductTimeSlotPrices') . $dayString .
+                        $moduleInstance->l(' not saved because of duplicacy.', 'WkBookingProductTimeSlotPrices');
                     break;
                 }
             }
@@ -568,15 +575,16 @@ class WkBookingProductTimeSlotPrices extends ObjectModel
         );
         if ($timSlotsInfo) {
             foreach ($timSlotsInfo as $timeSlotRow) {
-                if ((strtotime($timeFrom) < strtotime($timeSlotRow['time_slot_to']))
+                if (
+                    (strtotime($timeFrom) < strtotime($timeSlotRow['time_slot_to']))
                     && (strtotime($timeto) > strtotime($timeSlotRow['time_slot_from']))
                 ) {
                     $error = $moduleInstance->l('Time slot ', 'WkBookingProductTimeSlotPrices') . $timeFrom .
-                    $moduleInstance->l(' to ', 'WkBookingProductTimeSlotPrices') . $timeto .
-                    $moduleInstance->l(' for the date range ', 'WkBookingProductTimeSlotPrices')
-                    . date('Y-m-d', strtotime($dateFrom)) .
-                    $moduleInstance->l(' to ', 'WkBookingProductTimeSlotPrices') . date('Y-m-d', strtotime($dateTo)) .
-                    $moduleInstance->l(' not saved because of duplicacy.', 'WkBookingProductTimeSlotPrices');
+                        $moduleInstance->l(' to ', 'WkBookingProductTimeSlotPrices') . $timeto .
+                        $moduleInstance->l(' for the date range ', 'WkBookingProductTimeSlotPrices')
+                        . date('Y-m-d', strtotime($dateFrom)) .
+                        $moduleInstance->l(' to ', 'WkBookingProductTimeSlotPrices') . date('Y-m-d', strtotime($dateTo)) .
+                        $moduleInstance->l(' not saved because of duplicacy.', 'WkBookingProductTimeSlotPrices');
                     break;
                 }
             }

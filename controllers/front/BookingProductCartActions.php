@@ -38,8 +38,8 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
             $bookingType = Tools::getValue('booking_type');
             $eventMultiple = Tools::getValue('event_multiple');
             if ($bookingType == WkBookingProductInformation::TYPE_DATE_RANGE || $bookingType == WkBookingProductInformation::TYPE_RENTAL || ($bookingType == WkBookingProductInformation::TYPE_EVENT && !$eventMultiple)) {  // date range type bookings
-                $dateFrom = date('Y-m-d', strtotime(Tools::getValue('date_from')));
-                $dateTo = date('Y-m-d', strtotime(Tools::getValue('date_to')));
+                $dateFrom = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_from'))));
+                $dateTo = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_to'))));
                 $quantity = Tools::getValue('quantity');
                 $idProduct = Tools::getValue('id_product');
                 $idProductAttribute = Tools::getValue('id_product_attribute');
@@ -111,11 +111,11 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                             }
                             if (Configuration::get('WK_CONSIDER_DATE_TO')) {
                                 $lastDateCondition = strtotime($currentDate) == strtotime($dateTo)
-                                && !in_array($currentDate, $bookingDisableDates);
+                                    && !in_array($currentDate, $bookingDisableDates);
                             } else {
                                 $lastDateCondition = strtotime($currentDate) == strtotime($dateTo)
-                                && !in_array($currentDate, $bookingDisableDates)
-                                && !in_array($prevdate, $bookingDisableDates);
+                                    && !in_array($currentDate, $bookingDisableDates)
+                                    && !in_array($prevdate, $bookingDisableDates);
                             }
                             if ($lastDateCondition) {
                                 $totalPrice = WkBookingProductFeaturePricing::getBookingProductTotalPrice(
@@ -144,7 +144,8 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                                     $tempDateFrom,
                                     $dateTo,
                                 );
-                            } elseif (strtotime($currentDate) != strtotime($dateTo)
+                            } elseif (
+                                strtotime($currentDate) != strtotime($dateTo)
                                 && strtotime($currentDate) != strtotime($dateFrom)
                                 && !in_array($prevdate, $bookingDisableDates)
                                 && in_array($currentDate, $bookingDisableDates)
@@ -269,7 +270,7 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                     } else {
                         $result['status'] = 'ko';
                         $msg = $m->l('This date range is not available for booking.', 'BookingProductCartActions')
-                        . $m->l(' Please select another.', 'BookingProductCartActions');
+                            . $m->l(' Please select another.', 'BookingProductCartActions');
                         $this->errors[] = $msg;
                     }
                 } else {
@@ -288,7 +289,7 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                 }
                 $result['available_qty'] = $maxAvailableQuantity;
             } elseif ($bookingType == WkBookingProductInformation::TYPE_TIME_SLOT || ($bookingType == WkBookingProductInformation::TYPE_EVENT && $eventMultiple)) { // Time Slots type bookings
-                $date = date('Y-m-d', strtotime(Tools::getValue('date')));
+                $date = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date'))));
                 $selectedSlots = Tools::getValue('selected_slots');
                 $quantity = Tools::getValue('quantity');
                 $idProduct = Tools::getValue('id_product');
@@ -360,9 +361,9 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                                     $this->context->currency->id,
                                 );
                                 $totalTimeSlotFeaturePrice['total_price_tax_incl'] +=
-                                $timeSlotFeaturePrice['total_price_tax_incl'] * $slot['quantity'];
+                                    $timeSlotFeaturePrice['total_price_tax_incl'] * $slot['quantity'];
                                 $totalTimeSlotFeaturePrice['total_price_tax_excl'] +=
-                                $timeSlotFeaturePrice['total_price_tax_excl'] * $slot['quantity'];
+                                    $timeSlotFeaturePrice['total_price_tax_excl'] * $slot['quantity'];
 
                                 $dateRangeCartEntryExists = $wkBookingsCart->cartProductEntryExistsForTimeSlot(
                                     $this->context->cart->id,
@@ -403,7 +404,7 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                             } else {
                                 $e = $m->l('Required quantity not available for slot ', 'BookingProductCartActions');
                                 $this->errors[] = $e . $objBookingSlot->time_slot_from . ' - '
-                                . $objBookingSlot->time_slot_to;
+                                    . $objBookingSlot->time_slot_to;
                             }
                         }
                         $productPrice = '';
@@ -430,8 +431,8 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
             exit(json_encode($result));
         } elseif (isset($action) && $action == 'booking_product_price_calc') {
             // for price calculation while changing dates and slots
-            $dateFrom = date('Y-m-d', strtotime(Tools::getValue('date_from')));
-            $dateTo = date('Y-m-d', strtotime(Tools::getValue('date_to')));
+            $dateFrom = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_from'))));
+            $dateTo = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_to'))));
             $quantity = Tools::getValue('quantity');
             $idProduct = Tools::getValue('id_product');
             $idProductAttribute = Tools::getValue('id_product_attribute');
@@ -494,11 +495,11 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                             }
                             if (Configuration::get('WK_CONSIDER_DATE_TO')) {
                                 $lastDateCondition = (strtotime($currentDate) == strtotime($dateTo)
-                                && !in_array($currentDate, $bookingDisableDates));
+                                    && !in_array($currentDate, $bookingDisableDates));
                             } else {
                                 $lastDateCondition = (strtotime($currentDate) == strtotime($dateTo)
-                                && !in_array($currentDate, $bookingDisableDates)
-                                && !in_array($prevdate, $bookingDisableDates));
+                                    && !in_array($currentDate, $bookingDisableDates)
+                                    && !in_array($prevdate, $bookingDisableDates));
                             }
                             if ($lastDateCondition) {
                                 $totalPrice = WkBookingProductFeaturePricing::getBookingProductTotalPrice(
@@ -538,7 +539,8 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                                     $tempArr['regular_price'] = WkBookingPsHelper::displayPrice($productRegularPriceTotal);
                                 }
                                 $bookingDateRanges[] = $tempArr;
-                            } elseif (strtotime($currentDate) != strtotime($dateTo)
+                            } elseif (
+                                strtotime($currentDate) != strtotime($dateTo)
                                 && strtotime($currentDate) != strtotime($dateFrom)
                                 && !in_array($prevdate, $bookingDisableDates)
                                 && in_array($currentDate, $bookingDisableDates)
@@ -684,7 +686,7 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
             $oldTimeStamp = date_default_timezone_get();
             // set time zone by ip address for correct time for customer
             WkBookingProductTimeSlotPrices::setTimeZoneByIP();
-            $date = date('Y-m-d', strtotime(Tools::getValue('date')));
+            $date = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date'))));
             $quantity = Tools::getValue('quantity');
             $idProduct = Tools::getValue('id_product');
             $product = new Product((int) $idProduct);
@@ -785,13 +787,13 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                         $productFeaturePrice = WkBookingPsHelper::displayPrice($totalPrice['total_price_tax_incl'] * $minimal_quantity);
                         if ($totalPrice['have_price_rule'] && Configuration::get('WK_BOOKING_DISPLAY_REGULAR_PRICE_AFTER_DISCOUNT')) {
                             $result['productRegularTotalFeaturePriceFormated'] =
-                            WkBookingPsHelper::displayPrice($totalPrice['regular_total_price_tax_incl'] * $minimal_quantity);
+                                WkBookingPsHelper::displayPrice($totalPrice['regular_total_price_tax_incl'] * $minimal_quantity);
                         }
                     } elseif ($priceDisplay == 1) {
                         $productFeaturePrice = WkBookingPsHelper::displayPrice($totalPrice['total_price_tax_excl'] * $minimal_quantity);
                         if ($totalPrice['have_price_rule'] && Configuration::get('WK_BOOKING_DISPLAY_REGULAR_PRICE_AFTER_DISCOUNT')) {
                             $result['productRegularTotalFeaturePriceFormated'] =
-                            WkBookingPsHelper::displayPrice($totalPrice['regular_total_price_tax_excl'] * $minimal_quantity);
+                                WkBookingPsHelper::displayPrice($totalPrice['regular_total_price_tax_excl'] * $minimal_quantity);
                         }
                     }
                 }
@@ -810,7 +812,7 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
             date_default_timezone_set($oldTimeStamp);
             exit(json_encode($result));
         } elseif (isset($action) && $action == 'booking_product_time_slots_price_calc') {
-            $date = date('Y-m-d', strtotime(Tools::getValue('date')));
+            $date = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date'))));
             $selectedSlots = Tools::getValue('selected_slots');
             $booking_type = Tools::getValue('booking_type');
             $idProduct = Tools::getValue('id_product');
@@ -837,16 +839,16 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                     $this->context->currency->id,
                 );
                 $totalTimeSlotFeaturePrice['total_price_tax_incl'] +=
-                $timeSlotFeaturePrice['total_price_tax_incl'] * $slot['quantity'];
+                    $timeSlotFeaturePrice['total_price_tax_incl'] * $slot['quantity'];
                 if ($timeSlotFeaturePrice['have_price_rule'] && Configuration::get('WK_BOOKING_DISPLAY_REGULAR_PRICE_AFTER_DISCOUNT')) {
                     $totalTimeSlotFeaturePrice['regular_total_price_tax_incl'] +=
-                    $timeSlotFeaturePrice['regular_total_price_tax_incl'] * $slot['quantity'];
+                        $timeSlotFeaturePrice['regular_total_price_tax_incl'] * $slot['quantity'];
                 }
                 $totalTimeSlotFeaturePrice['total_price_tax_excl'] +=
-                $timeSlotFeaturePrice['total_price_tax_excl'] * $slot['quantity'];
+                    $timeSlotFeaturePrice['total_price_tax_excl'] * $slot['quantity'];
                 if ($timeSlotFeaturePrice['have_price_rule'] && Configuration::get('WK_BOOKING_DISPLAY_REGULAR_PRICE_AFTER_DISCOUNT')) {
                     $totalTimeSlotFeaturePrice['regular_total_price_tax_excl'] +=
-                    $timeSlotFeaturePrice['regular_total_price_tax_excl'] * $slot['quantity'];
+                        $timeSlotFeaturePrice['regular_total_price_tax_excl'] * $slot['quantity'];
                 }
             }
             $productPrice = '';
@@ -885,16 +887,18 @@ class PsBookingBookingProductCartActionsModuleFrontController extends ModuleFron
                 $daysCount = 1;
             }
             $quantityToReduce = ($daysCount * (int) $objWkBookingsCart->quantity);
-            if ($this->context->cart->updateQty(
-                (int) $quantityToReduce,
-                (int) $idProduct,
-                (int) $idProductAttribute,
-                false,
-                'down',
-                0,
-                null,
-                true,
-            )) {
+            if (
+                $this->context->cart->updateQty(
+                    (int) $quantityToReduce,
+                    (int) $idProduct,
+                    (int) $idProductAttribute,
+                    false,
+                    'down',
+                    0,
+                    null,
+                    true,
+                )
+            ) {
                 if ($objWkBookingsCart->delete()) {
                     exit(
                         json_encode(

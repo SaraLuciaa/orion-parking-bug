@@ -51,7 +51,8 @@ class PsBooking extends Module
     {
         if (Tools::isSubmit('btnSubmit_generalconfig')) {
             $WK_CONSIDER_DATE_TO = Configuration::get('WK_CONSIDER_DATE_TO');
-            if (Tools::getValue('WK_CONSIDER_DATE_TO') != $WK_CONSIDER_DATE_TO
+            if (
+                Tools::getValue('WK_CONSIDER_DATE_TO') != $WK_CONSIDER_DATE_TO
             ) {
                 $objBookingsCart = new WkBookingsCart();
                 if (!$objBookingsCart->deleteCurrentCustomerCarts($this->context->shop->id)) {
@@ -226,7 +227,7 @@ class PsBooking extends Module
                         ],
                     ],
                     'desc' => $this->l('If yes, last date price will be added for the booking product. ')
-                    . $this->l('Otherwise booking will not be considered for the last date. '),
+                        . $this->l('Otherwise booking will not be considered for the last date. '),
                 ],
                 [
                     'type' => 'switch',
@@ -322,7 +323,7 @@ class PsBooking extends Module
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'btnSubmit_generalconfig';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
-        . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name . '&page=generalSetting';
+            . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name . '&page=generalSetting';
         $helper->token = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars = [
             'fields_value' => $this->getConfigFieldsValues(),
@@ -501,7 +502,7 @@ class PsBooking extends Module
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'btnSubmit_eventconfig';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
-        . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name . '&page=eventSetting';
+            . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name . '&page=eventSetting';
         $helper->token = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars = [
             'fields_value' => $this->getConfigFieldsValues(),
@@ -549,7 +550,7 @@ class PsBooking extends Module
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'btnSubmit_mapconfig';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
-        . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name . '&page=mapSetting';
+            . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name . '&page=mapSetting';
         $helper->token = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars = [
             'fields_value' => $this->getConfigFieldsValues(),
@@ -639,16 +640,18 @@ class PsBooking extends Module
                             $daysCount = 1;
                         }
                         $quantityToReduce = ($daysCount * (int) $objWkBookingsCart->quantity);
-                        if ($this->context->cart->updateQty(
-                            (int) $quantityToReduce,
-                            (int) $idProduct,
-                            (int) $idProductAttribute,
-                            false,
-                            'down',
-                            0,
-                            null,
-                            true,
-                        )) {
+                        if (
+                            $this->context->cart->updateQty(
+                                (int) $quantityToReduce,
+                                (int) $idProduct,
+                                (int) $idProductAttribute,
+                                false,
+                                'down',
+                                0,
+                                null,
+                                true,
+                            )
+                        ) {
                             if (!$objWkBookingsCart->delete()) {
                                 $e = $this->l('Error while deleting product from cart.');
                                 $this->context->controller->errors[] = $e;
@@ -660,10 +663,12 @@ class PsBooking extends Module
                     /* To remove bookings from cart if product is deleted */
                     $product = new Product($idProduct);
                     if (!Validate::isLoadedObject($product)) {
-                        if (!$wkBookingsCart->deleteBookingProductCartByIdProductIdCart(
-                            $idProduct,
-                            $this->context->cart->id,
-                        )) {
+                        if (
+                            !$wkBookingsCart->deleteBookingProductCartByIdProductIdCart(
+                                $idProduct,
+                                $this->context->cart->id,
+                            )
+                        ) {
                             $this->context->controller->errors[] = $this->l('Error while deleting product from cart.');
                         }
                     } else {
@@ -686,16 +691,18 @@ class PsBooking extends Module
                                 );
                             }
                             if (!$slotDetails) {
-                                if ($this->context->cart->updateQty(
-                                    (int) $objWkBookingsCart->quantity,
-                                    (int) $idProduct,
-                                    (int) $idProductAttribute,
-                                    false,
-                                    'down',
-                                    0,
-                                    null,
-                                    true,
-                                )) {
+                                if (
+                                    $this->context->cart->updateQty(
+                                        (int) $objWkBookingsCart->quantity,
+                                        (int) $idProduct,
+                                        (int) $idProductAttribute,
+                                        false,
+                                        'down',
+                                        0,
+                                        null,
+                                        true,
+                                    )
+                                ) {
                                     if (!$objWkBookingsCart->delete()) {
                                         $e = $this->l('Error while deleting booking from cart.');
                                         $this->context->controller->errors[] = $e;
@@ -719,16 +726,18 @@ class PsBooking extends Module
                                 }
                                 $maxAvailableQuantity = $slotDetails['quantity'] - $bookedSlotQuantity;
                                 if ($maxAvailableQuantity < $objWkBookingsCart->quantity) {
-                                    if ($this->context->cart->updateQty(
-                                        (int) $objWkBookingsCart->quantity,
-                                        (int) $idProduct,
-                                        (int) $idProductAttribute,
-                                        false,
-                                        'down',
-                                        0,
-                                        null,
-                                        true,
-                                    )) {
+                                    if (
+                                        $this->context->cart->updateQty(
+                                            (int) $objWkBookingsCart->quantity,
+                                            (int) $idProduct,
+                                            (int) $idProductAttribute,
+                                            false,
+                                            'down',
+                                            0,
+                                            null,
+                                            true,
+                                        )
+                                    ) {
                                         if (!$objWkBookingsCart->delete()) {
                                             $e = $this->l('Error while deleting booking from cart.');
                                             $this->context->controller->errors[] = $e;
@@ -774,9 +783,11 @@ class PsBooking extends Module
         }
         // disable the feature price plans which date range has been expired
         if ('product' == Tools::getValue('controller')) {
-            if ($productFeaturePlans = WkBookingProductFeaturePricing::getFeaturePriceByIdProduct(
-                Tools::getValue('id_product'),
-            )) {
+            if (
+                $productFeaturePlans = WkBookingProductFeaturePricing::getFeaturePriceByIdProduct(
+                    Tools::getValue('id_product'),
+                )
+            ) {
                 $currentDateTime = strtotime(date('Y-m-d'));
                 foreach ($productFeaturePlans as $plan) {
                     $planDateFrom = strtotime($plan['date_from']);
@@ -807,11 +818,11 @@ class PsBooking extends Module
                 }
             }
         }
-        
+
         if ($this->context->controller->php_self == 'index') {
-        // Cargar CSS y JS solo en la p¨¢gina de inicio
-        $this->context->controller->addCSS($this->_path . 'views/css/booking_page.css');
-        $this->context->controller->addJS($this->_path . 'views/js/booking_page.js');
+            // Cargar CSS y JS solo en la p锟斤拷锟�0锟�4gina de inicio
+            $this->context->controller->addCSS($this->_path . 'views/css/booking_page.css');
+            $this->context->controller->addJS($this->_path . 'views/js/booking_page.js');
         }
     }
 
@@ -822,8 +833,10 @@ class PsBooking extends Module
         $idProduct,
         $idProductAttribute
     ) {
-        if (isset($bookingDisableDatesInfo['disabledDays'])
-        && !empty($bookingDisableDatesInfo['disabledDays'])) {
+        if (
+            isset($bookingDisableDatesInfo['disabledDays'])
+            && !empty($bookingDisableDatesInfo['disabledDays'])
+        ) {
             if ($bookingType == 1) {
                 $totalDaySeconds = 24 * 60 * 60;
                 if ($objWkBookingsCart->consider_last_date) {
@@ -840,16 +853,18 @@ class PsBooking extends Module
                             $objWkBookingsCart->date_to,
                         );
                         $quantityToReduce = ($daysCount * (int) $objWkBookingsCart->quantity);
-                        if ($this->context->cart->updateQty(
-                            (int) $quantityToReduce,
-                            (int) $idProduct,
-                            (int) $idProductAttribute,
-                            false,
-                            'down',
-                            0,
-                            null,
-                            true,
-                        )) {
+                        if (
+                            $this->context->cart->updateQty(
+                                (int) $quantityToReduce,
+                                (int) $idProduct,
+                                (int) $idProductAttribute,
+                                false,
+                                'down',
+                                0,
+                                null,
+                                true,
+                            )
+                        ) {
                             if (!$objWkBookingsCart->delete()) {
                                 $error = $this->l('Error while deleting booking from cart.');
                                 $this->context->controller->errors[] = $error;
@@ -867,16 +882,18 @@ class PsBooking extends Module
                 $dateFromT = strtotime($objWkBookingsCart->date_from);
                 $day = date('w', $dateFromT);
                 if (in_array($day, $bookingDisableDatesInfo['disabledDays'])) {
-                    if ($this->context->cart->updateQty(
-                        (int) $objWkBookingsCart->quantity,
-                        (int) $idProduct,
-                        (int) $idProductAttribute,
-                        false,
-                        'down',
-                        0,
-                        null,
-                        true,
-                    )) {
+                    if (
+                        $this->context->cart->updateQty(
+                            (int) $objWkBookingsCart->quantity,
+                            (int) $idProduct,
+                            (int) $idProductAttribute,
+                            false,
+                            'down',
+                            0,
+                            null,
+                            true,
+                        )
+                    ) {
                         if (!$objWkBookingsCart->delete()) {
                             $error = $this->l('Error while deleting booking from cart.');
                             $this->context->controller->errors[] = $error;
@@ -887,8 +904,10 @@ class PsBooking extends Module
                 }
             }
         }
-        if (isset($bookingDisableDatesInfo['disabledDates'])
-        && !empty($bookingDisableDatesInfo['disabledDates'])) {
+        if (
+            isset($bookingDisableDatesInfo['disabledDates'])
+            && !empty($bookingDisableDatesInfo['disabledDates'])
+        ) {
             if ($bookingType == 1) {
                 $totalDaySeconds = 24 * 60 * 60;
                 if ($objWkBookingsCart->consider_last_date) {
@@ -906,16 +925,18 @@ class PsBooking extends Module
                                 $objWkBookingsCart->date_to,
                             );
                             $quantityToReduce = ($daysCount * (int) $objWkBookingsCart->quantity);
-                            if ($this->context->cart->updateQty(
-                                (int) $quantityToReduce,
-                                (int) $idProduct,
-                                (int) $idProductAttribute,
-                                false,
-                                'down',
-                                0,
-                                null,
-                                true,
-                            )) {
+                            if (
+                                $this->context->cart->updateQty(
+                                    (int) $quantityToReduce,
+                                    (int) $idProduct,
+                                    (int) $idProductAttribute,
+                                    false,
+                                    'down',
+                                    0,
+                                    null,
+                                    true,
+                                )
+                            ) {
                                 if (!$objWkBookingsCart->delete()) {
                                     $error = $this->l('Error while deleting booking from cart.');
                                     $this->context->controller->errors[] = $error;
@@ -935,16 +956,18 @@ class PsBooking extends Module
                     $dateFromT = strtotime($objWkBookingsCart->date_from);
                     $disabledate = strtotime($disabledDates);
                     if ($dateFromT == $disabledate) {
-                        if ($this->context->cart->updateQty(
-                            (int) $objWkBookingsCart->quantity,
-                            (int) $idProduct,
-                            (int) $idProductAttribute,
-                            false,
-                            'down',
-                            0,
-                            null,
-                            true,
-                        )) {
+                        if (
+                            $this->context->cart->updateQty(
+                                (int) $objWkBookingsCart->quantity,
+                                (int) $idProduct,
+                                (int) $idProductAttribute,
+                                false,
+                                'down',
+                                0,
+                                null,
+                                true,
+                            )
+                        ) {
                             if (!$objWkBookingsCart->delete()) {
                                 $e = $this->l('Error while deleting booking from cart.');
                                 $this->context->controller->errors[] = $e;
@@ -1194,8 +1217,10 @@ class PsBooking extends Module
                 }
             }
         }
-        if ('checkout/cart' == $params['template_file']
-        || 'checkout/_partials/cart-detailed' == $params['template_file']) {
+        if (
+            'checkout/cart' == $params['template_file']
+            || 'checkout/_partials/cart-detailed' == $params['template_file']
+        ) {
             $isBookingProductAvailable = $this->cartOverridedTpl();
             if ($isBookingProductAvailable) {
                 $priceDisplay = Group::getPriceDisplayMethod(Group::getCurrent()->id);
@@ -1315,7 +1340,7 @@ class PsBooking extends Module
                                 'priceDisplay' => $priceDisplay,
                                 'orderProducts' => $orderProducts,
                                 'order_details_template_file' => _PS_THEME_DIR_ .
-                                'templates/customer/order-detail.tpl',
+                                    'templates/customer/order-detail.tpl',
                             ],
                         );
                         if (WkBookingPsHelper::isHummingbirdTheme()) {
@@ -1547,8 +1572,8 @@ class PsBooking extends Module
             }
             $this->context->smarty->assign(
                 [
-                    'date_from' => date('d-m-Y', strtotime($dateFrom)),
-                    'date_to' => date('d-m-Y', strtotime($dateTo)),
+                    'date_from' => date('m-d-Y', strtotime($dateFrom)),
+                    'date_to' => date('m-d-Y', strtotime($dateTo)),
                     'minimal_quantity' => $minimal_quantity,
                 ],
             );
@@ -1962,7 +1987,8 @@ class PsBooking extends Module
         if (empty($controller)) {
             $controller = $this->context->controller->php_self;
         }
-        if ('product' == $controller
+        if (
+            'product' == $controller
             || 'index' == $controller
             || 'category' == $controller
             || 'cart' == $controller
@@ -2237,7 +2263,7 @@ class PsBooking extends Module
         foreach ($orderProducts as $key => &$product) {
             if ($product['image'] != null) {
                 $imageName = 'product_mini_' . (int) $product['product_id'] .
-                (isset($product['product_attribute_id']) ? '_' . (int) $product['product_attribute_id'] : '') . '.jpg';
+                    (isset($product['product_attribute_id']) ? '_' . (int) $product['product_attribute_id'] : '') . '.jpg';
 
                 // generate image cache, only for back office
                 $product['image_tag'] = ImageManager::thumbnail(
@@ -2661,12 +2687,12 @@ class PsBooking extends Module
             $this->registerHook('displayNav1');
         }
     }
-    
+
     public function hookDisplayHome($params)
     {
-        // Obtener el enlace al controlador 'bookingproduct' dentro del módulo 'psbooking'
+        // Obtener el enlace al controlador 'bookingproduct' dentro del m锟斤拷dulo 'psbooking'
         $this->context->smarty->assign('form_action', $this->context->link->getModuleLink('psbooking', 'bookingproduct'));
-    
+
         // Obtener valores desde el formulario
         $dateFrom = Tools::getValue('date_from', date('Y-m-d'));
         $dateTo = Tools::getValue('date_to', date('Y-m-d', strtotime('+1 month')));
@@ -2675,9 +2701,9 @@ class PsBooking extends Module
         $quantity = Tools::getValue('quantity', 1);
         $type = Tools::getValue('type', '');
         $categories = Category::getCategories($this->context->language->id, true, false);
-        
+
         $categoryId = (int) Tools::getValue('category', 0);
-    
+
         // Asignar variables a Smarty
         $this->context->smarty->assign(array(
             'date_from' => $dateFrom,
@@ -2690,7 +2716,7 @@ class PsBooking extends Module
             'selected_category' => $categoryId,
             'booking_types' => WkBookingProductInformation::getBookingTypes()
         ));
-    
+
         return $this->fetch('module:psbooking/views/templates/hook/psbooking_home.tpl');
     }
 
@@ -2809,7 +2835,8 @@ class PsBooking extends Module
         if (Shop::isFeatureActive()) {
             Shop::setContext(Shop::CONTEXT_ALL);
         }
-        if (!parent::install()
+        if (
+            !parent::install()
             || !$this->registerModuleHooks()
             || !$objModuleDb->createTables()
             || !$this->callInstallTab()
@@ -2890,7 +2917,8 @@ class PsBooking extends Module
     public function uninstall()
     {
         $objModuleDb = new WkPsBookingDb();
-        if (!parent::uninstall()
+        if (
+            !parent::uninstall()
             || !$objModuleDb->dropTables()
             || !$this->deleteConfigVars()
             || !$this->uninstallTab()

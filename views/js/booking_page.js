@@ -16,38 +16,38 @@
 * @copyright Since 2010 Webkul
 * @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
 */
-$(document).ready(function() {
-    $(document).on("focus", "#search_date_from, #search_date_to", function() {
+$(document).ready(function () {
+    $(document).on("focus", "#search_date_from, #search_date_to", function () {
         var dlocale = prestashop.language.iso_code;
-        if (typeof($.datepicker.regional[dlocale]) == 'undefined') {
+        if (typeof ($.datepicker.regional[dlocale]) == 'undefined') {
             dlocale = '';
         }
         $("#search_date_from").datepicker({
             firstDay: wk_monday_first_day_week,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: 0,
             changeYear: true,
             changeMonth: true,
-            onSelect: function(selectedDate) {
+            onSelect: function (selectedDate) {
                 var date_format = selectedDate.split("-");
-                var selectedDate = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[1] - 1, date_format[0])));
+                var selectedDate = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[0] - 1, date_format[1])));
                 $("#search_date_to").datepicker("option", "minDate", selectedDate);
             }
         });
         $("#search_date_to").datepicker({
             firstDay: wk_monday_first_day_week,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: 0,
             changeYear: true,
             changeMonth: true,
-            beforeShow: function(input, instance) {
+            beforeShow: function (input, instance) {
                 $("#search_date_from").removeClass('hasDatepicker');
                 var minDateTo = $('#search_date_from').val();
                 var date_format = minDateTo.split("-");
-                var minDateTo = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[1] - 1, date_format[0])));
+                var minDateTo = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[0] - 1, date_format[1])));
                 $(".search_date_to").datepicker("option", "minDate", minDateTo);
             },
         });
-        $.datepicker.setDefaults( $.datepicker.regional[dlocale] );
+        $.datepicker.setDefaults($.datepicker.regional[dlocale]);
     });
 });

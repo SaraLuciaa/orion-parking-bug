@@ -17,15 +17,15 @@
 * @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
 */
 
-$(document).ready(function() {
+$(document).ready(function () {
     //date picker for date ranges
     $("#feature_plan_date_from").datepicker({
         showOtherMonths: true,
-        dateFormat: 'dd-mm-yy',
+        dateFormat: 'mm-dd-yy',
         minDate: 0,
-        onSelect: function(selectedDate) {
+        onSelect: function (selectedDate) {
             var date_format = selectedDate.split("-");
-            var selectedDate = new Date(date_format[2], date_format[1] - 1, date_format[0]);
+            var selectedDate = new Date(date_format[2], date_format[0] - 1, date_format[1]);
             selectedDate.setDate(selectedDate.getDate() + 1);
             $("#feature_plan_date_to").datepicker("option", "minDate", selectedDate);
         },
@@ -33,11 +33,11 @@ $(document).ready(function() {
 
     $("#feature_plan_date_to").datepicker({
         showOtherMonths: true,
-        dateFormat: 'dd-mm-yy',
+        dateFormat: 'mm-dd-yy',
         minDate: getMinDate($("#feature_plan_date_from").val()),
-        onSelect: function(selectedDate) {
+        onSelect: function (selectedDate) {
             var date_format = selectedDate.split("-");
-            var selectedDate = new Date(date_format[2], date_format[1] - 1, date_format[0]);
+            var selectedDate = new Date(date_format[2], date_format[0] - 1, date_format[1]);
             selectedDate.setDate(selectedDate.getDate() - 1);
             $("#feature_plan_date_from").datepicker("option", "maxDate", selectedDate);
         }
@@ -45,11 +45,11 @@ $(document).ready(function() {
 
     $("#specific_date").datepicker({
         showOtherMonths: true,
-        dateFormat: 'dd-mm-yy',
+        dateFormat: 'mm-dd-yy',
         minDate: 0,
     });
 
-    $(".is_special_days_exists").on('click', function() {
+    $(".is_special_days_exists").on('click', function () {
         if ($(this).is(':checked')) {
             $('.week_days').show();
         } else {
@@ -65,7 +65,7 @@ $(document).ready(function() {
         }
     }
 
-    $('#price_impact_type').on('change', function() {
+    $('#price_impact_type').on('change', function () {
         showHideImpactType();
     });
     showHideImpactType();
@@ -78,7 +78,7 @@ $(document).ready(function() {
         }
     }
 
-    $(document).on('keyup', "#booking_product_name", function(event) {
+    $(document).on('keyup', "#booking_product_name", function (event) {
         if (($('.booking_product_search_results_ul').is(':visible')) && (event.which == 40 || event.which == 38)) {
             $(this).blur();
             if (event.which == 40) {
@@ -99,12 +99,12 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'JSON',
-                    success: function(data) {
+                    success: function (data) {
                         var html = '';
                         if (data.status != 'failed') {
-                            $.each(data, function(key, booking_product) {
+                            $.each(data, function (key, booking_product) {
                                 let single_event = 0;
-                                if (typeof(booking_product.single_event) != 'undefined' && booking_product.single_event) {
+                                if (typeof (booking_product.single_event) != 'undefined' && booking_product.single_event) {
                                     single_event = 1;
                                 }
                                 html += '<li data-id_product="' + booking_product.id_product + '" data-single_event="' + single_event + '">' + booking_product.name + '</li>';
@@ -121,7 +121,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '.booking_product_search_results_ul li', function(event) {
+    $(document).on('click', '.booking_product_search_results_ul li', function (event) {
         if ($(this).data('single_event')) {
             $('#single_event_hide').hide();
             $('#single_event_input').val(1);
@@ -135,7 +135,7 @@ $(document).ready(function() {
         $('.booking_product_search_results_ul').empty().hide();
     });
 
-    $('#date_selection_type').on('change', function() {
+    $('#date_selection_type').on('change', function () {
         showHideOnDateSelectionType();
     });
 
@@ -143,21 +143,19 @@ $(document).ready(function() {
 
 });
 
-function showHideImpactType()
-{
+function showHideImpactType() {
     if ($('#price_impact_type').val() == 2) {
         $(".payment_type_icon").text(defaultcurrency_sign);
     } else if ($('#price_impact_type').val() == 1) {
         $(".payment_type_icon").text('%');
     } else {
-        if (typeof(defaultcurrency_sign) != 'undefined') {
+        if (typeof (defaultcurrency_sign) != 'undefined') {
             $(".payment_type_icon").text(defaultcurrency_sign);
         }
     }
 }
 
-function showHideOnDateSelectionType()
-{
+function showHideOnDateSelectionType() {
     if ($('#date_selection_type').val() == 2) {
         $(".specific_date_type").show();
         $(".date_range_type").hide();
@@ -191,7 +189,7 @@ function highlightDateBorder(elementVal, date) {
         }
         dmy = date.getFullYear() + "-" + currentMonth + "-" + currentDate;
         var date_format = elementVal.split("-");
-        var check_in_time = (date_format[2]) + '-' + (date_format[1]) + '-' + (date_format[0]);
+        var check_in_time = (date_format[2]) + '-' + (date_format[0]) + '-' + (date_format[1]);
         if (dmy == check_in_time) {
             return [true, "selectedCheckedDate", "Check-In date"];
         } else {

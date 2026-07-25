@@ -202,7 +202,8 @@ class AdminBookingOrdersController extends ModuleAdminController
                 $this->errors[] = $this->module->l('Please select customer', 'AdminBookingOrdersController');
             }
             $customer = new Customer((int) $customerId);
-            if (!Validate::isLoadedObject($customer)
+            if (
+                !Validate::isLoadedObject($customer)
             ) {
                 $this->errors[] = $this->module->l('Invalid customer', 'AdminBookingOrdersController');
             }
@@ -282,7 +283,7 @@ class AdminBookingOrdersController extends ModuleAdminController
             );
         } else {
             $wkOrderLink = $this->context->link->getAdminLink('AdminOrders') .
-            '&id_order=' . (int) $idOrder . '&vieworder';
+                '&id_order=' . (int) $idOrder . '&vieworder';
         }
         $this->context->smarty->assign(
             [
@@ -394,8 +395,8 @@ class AdminBookingOrdersController extends ModuleAdminController
         }
         $priceDisplay = Group::getPriceDisplayMethod(Group::getCurrent()->id);
         if ($bookingType == WkBookingProductInformation::TYPE_DATE_RANGE || $bookingType == WkBookingProductInformation::TYPE_RENTAL || ($bookingType == WkBookingProductInformation::TYPE_EVENT && !$eventMultiple)) {
-            $dateFrom = date('Y-m-d', strtotime(Tools::getValue('date_from')));
-            $dateTo = date('Y-m-d', strtotime(Tools::getValue('date_to')));
+            $dateFrom = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_from'))));
+            $dateTo = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date_to'))));
             $quantity = Tools::getValue('quantity');
             $idProduct = Tools::getValue('id_product');
             $idProductAttribute = Tools::getValue('id_product_attribute');
@@ -477,11 +478,11 @@ class AdminBookingOrdersController extends ModuleAdminController
                         }
                         if (Configuration::get('WK_CONSIDER_DATE_TO')) {
                             $lastDateCondition = strtotime($currentDate) == strtotime($dateTo)
-                            && !in_array($currentDate, $bookingDisableDates);
+                                && !in_array($currentDate, $bookingDisableDates);
                         } else {
                             $lastDateCondition = strtotime($currentDate) == strtotime($dateTo)
-                            && !in_array($currentDate, $bookingDisableDates)
-                            && !in_array($prevdate, $bookingDisableDates);
+                                && !in_array($currentDate, $bookingDisableDates)
+                                && !in_array($prevdate, $bookingDisableDates);
                         }
                         if ($lastDateCondition) {
                             $totalPrice = WkBookingProductFeaturePricing::getBookingProductTotalPrice(
@@ -510,7 +511,8 @@ class AdminBookingOrdersController extends ModuleAdminController
                                 $tempDateFrom,
                                 $dateTo,
                             );
-                        } elseif (strtotime($currentDate) != strtotime($dateTo)
+                        } elseif (
+                            strtotime($currentDate) != strtotime($dateTo)
                             && strtotime($currentDate) != strtotime($dateFrom)
                             && !in_array($prevdate, $bookingDisableDates)
                             && in_array($currentDate, $bookingDisableDates)
@@ -655,7 +657,10 @@ class AdminBookingOrdersController extends ModuleAdminController
                         }
                         $result['status'] = 'ok';
                         $result['id_cart'] = $cartId;
-                        $orderLink = $this->context->link->getPageLink('order', null, (int) $cart->id_lang,
+                        $orderLink = $this->context->link->getPageLink(
+                            'order',
+                            null,
+                            (int) $cart->id_lang,
                             'step=3&recover_cart=' . (int) $cart->id
                             . '&token_cart=' . md5(_COOKIE_KEY_ . 'recover_cart_' . (int) $cart->id),
                         );
@@ -757,7 +762,7 @@ class AdminBookingOrdersController extends ModuleAdminController
                 $result['errors'] = $errors;
             }
         } elseif ($bookingType == WkBookingProductInformation::TYPE_TIME_SLOT || ($bookingType == WkBookingProductInformation::TYPE_EVENT && $eventMultiple)) {
-            $date = date('Y-m-d', strtotime(Tools::getValue('date')));
+            $date = date('Y-m-d', strtotime(str_replace('-', '/', Tools::getValue('date'))));
             $selectedSlots = Tools::getValue('selected_slots');
             $quantity = Tools::getValue('quantity');
             $idProduct = Tools::getValue('id_product');
@@ -877,12 +882,15 @@ class AdminBookingOrdersController extends ModuleAdminController
                             }
                         } else {
                             $errors[] = $this->module->l('Required quantity not available for slot ', 'AdminBookingOrdersController')
-                            . $objBookingSlot->time_slot_from . ' - ' . $objBookingSlot->time_slot_to;
+                                . $objBookingSlot->time_slot_from . ' - ' . $objBookingSlot->time_slot_to;
                         }
                         if (!count($errors)) {
                             $result['status'] = 'ok';
                             $result['id_cart'] = $cartId;
-                            $orderLink = $this->context->link->getPageLink('order', null, (int) $cart->id_lang,
+                            $orderLink = $this->context->link->getPageLink(
+                                'order',
+                                null,
+                                (int) $cart->id_lang,
                                 'step=3&recover_cart=' . (int) $cart->id
                                 . '&token_cart=' . md5(_COOKIE_KEY_ . 'recover_cart_' . (int) $cart->id),
                             );
@@ -1040,8 +1048,8 @@ class AdminBookingOrdersController extends ModuleAdminController
             $this->context->smarty->assign(
                 [
                     'minimal_quantity' => $minimal_quantity,
-                    'date_from' => date('d-m-Y', strtotime($dateFrom)),
-                    'date_to' => date('d-m-Y', strtotime($dateTo)),
+                    'date_from' => date('m-d-Y', strtotime($dateFrom)),
+                    'date_to' => date('m-d-Y', strtotime($dateTo)),
                     'available_after' => $availableAfter,
                     'idProduct' => $idProduct,
                     'idProductAtrribute' => $idProductAtrribute,
@@ -1449,16 +1457,18 @@ class AdminBookingOrdersController extends ModuleAdminController
             $daysCount = 1;
         }
         $quantityToReduce = ($daysCount * (int) $objBookingsCart->quantity);
-        if ($cart->updateQty(
-            (int) $quantityToReduce,
-            (int) $idProduct,
-            null,
-            false,
-            'down',
-            0,
-            null,
-            true,
-        )) {
+        if (
+            $cart->updateQty(
+                (int) $quantityToReduce,
+                (int) $idProduct,
+                null,
+                false,
+                'down',
+                0,
+                null,
+                true,
+            )
+        ) {
             if ($objBookingsCart->delete()) {
                 $result['status'] = 'ok';
                 $result['msg'] = $this->module->l('Cart product successfully updated.', 'AdminBookingOrdersController');
@@ -1498,7 +1508,8 @@ class AdminBookingOrdersController extends ModuleAdminController
                         null,
                         _PS_MAIL_DIR_,
                         true,
-                        $cart->id_shop)
+                        $cart->id_shop
+                    )
                 ) {
                     exit(json_encode(['errors' => false, 'msg' => $this->module->l('The email was sent to your customer.', 'AdminBookingOrdersController')]));
                 }

@@ -38,14 +38,14 @@ class psbookingbookingProductModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
 
-        $dateFrom = Tools::getValue('date_from');
+        $dateFrom = str_replace('-', '/', Tools::getValue('date_from'));
         if (!$dateFrom) {
-            $dateFrom = date('d-m-Y');
+            $dateFrom = date('m-d-Y');
         }
 
-        $dateTo = Tools::getValue('date_to');
+        $dateTo = str_replace('-', '/', Tools::getValue('date_to'));
         if (!$dateTo) {
-            $dateTo = date('d-m-Y', strtotime('+ 1 months'));
+            $dateTo = date('m-d-Y', strtotime('+ 1 months'));
         }
 
         $type = Tools::getValue('type');

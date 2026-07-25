@@ -16,7 +16,7 @@
 * @copyright Since 2010 Webkul
 * @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
 */
-$(document).ready(function() {
+$(document).ready(function () {
 
     var ajax_pre_check_var = '';
     //abort ajax
@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
     }
     //abort ajax
-    $(document).on('keyup', "#customer-search-input", function(event) {
+    $(document).on('keyup', "#customer-search-input", function (event) {
         if (($('.customer_search_results_ul').is(':visible')) && (event.which == 40 || event.which == 38)) {
             $(this).blur();
             if (event.which == 40) {
@@ -48,11 +48,11 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'JSON',
-                    success: function(data) {
+                    success: function (data) {
                         var html = '';
                         if (data.status != 'failed') {
-                            $.each(data, function(key, customer) {
-                                html += '<li data-id_customer="' + customer.id_customer + '">' + customer.cname + '('+customer.email+')'+'</li>';
+                            $.each(data, function (key, customer) {
+                                html += '<li data-id_customer="' + customer.id_customer + '">' + customer.cname + '(' + customer.email + ')' + '</li>';
                             });
                             $('.customer_search_results_ul').html(html);
                             $('.customer_search_results_ul').show();
@@ -66,7 +66,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '.customer_search_results_ul li', function(event) {
+    $(document).on('click', '.customer_search_results_ul li', function (event) {
         var id_customer = $(this).data('id_customer');
         $('#customer-search-input').val($(this).html());
         $('#customer_id').val($(this).data('id_customer'));
@@ -82,15 +82,15 @@ $(document).ready(function() {
             },
             method: 'POST',
             dataType: 'JSON',
-            success: function(data) {
+            success: function (data) {
                 if (data.status != 'failed') {
                     var addresses_delivery_options = '';
                     var address_delivery_detail = '';
-                    $.each(data, function(key, address) {
+                    $.each(data, function (key, address) {
                         if (key == 0) {
                             address_delivery_detail = address.formated_address;
                         }
-                        addresses_delivery_options += '<option value="'+address.id_address+'" >'+address.alias+'</option>';
+                        addresses_delivery_options += '<option value="' + address.id_address + '" >' + address.alias + '</option>';
                     });
                     $('#id_address_delivery').html(addresses_delivery_options);
                     $('#address_delivery_detail').html(address_delivery_detail);
@@ -104,11 +104,11 @@ $(document).ready(function() {
         });
     });
 
-    $("#id_address_delivery").change(function() {
+    $("#id_address_delivery").change(function () {
         updateAddresses();
     });
 
-    $(document).on('keyup', "#product-search-input", function(event) {
+    $(document).on('keyup', "#product-search-input", function (event) {
         if (($('.product_search_results_ul').is(':visible')) && (event.which == 40 || event.which == 38)) {
             $(this).blur();
             if (event.which == 40) {
@@ -131,10 +131,10 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'JSON',
-                    success: function(data) {
+                    success: function (data) {
                         var html = '';
                         if (data.status != 'failed') {
-                            $.each(data, function(key, booking_product) {
+                            $.each(data, function (key, booking_product) {
                                 html += '<li data-id_product="' + booking_product.id_product + '" data-id_product_attribute="' + booking_product.id_product_attribute + '">' + booking_product.name + '</li>';
                             });
                             $('.product_search_results_ul').html(html);
@@ -149,7 +149,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '.product_search_results_ul li', function(event) {
+    $(document).on('click', '.product_search_results_ul li', function (event) {
         $('#product-search-input').val('');
         var id_product = $(this).data('id_product');
         var id_product_attribute = $(this).data('id_product_attribute');
@@ -164,25 +164,25 @@ $(document).ready(function() {
                 id_cart: $('#wk_id_cart').val(),
             },
             method: 'POST',
-            success: function(data) {
+            success: function (data) {
                 $('#booking_product_interface').html(data);
             }
         });
     });
 
-    $(document).on("focus", ".booking_date_from, .booking_date_to", function() {
+    $(document).on("focus", ".booking_date_from, .booking_date_to", function () {
         $(".booking_date_from").datepicker({
             firstDay: wk_monday_first_day_week,
             showOtherMonths: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: available_after,
-            beforeShow: function(input, instance) {
+            beforeShow: function (input, instance) {
                 $(".booking_date_to").removeClass('hasDatepicker');
             },
             //for calender Css
-            onSelect: function(selectedDate) {
+            onSelect: function (selectedDate) {
                 var date_format = selectedDate.split("-");
-                var selectedDate = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[1] - 1, date_format[0])));
+                var selectedDate = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[0] - 1, date_format[1])));
                 if (considerDateToConfiguration == 0) {
                     selectedDate.setDate(selectedDate.getDate() + 1);
                 } else {
@@ -201,7 +201,7 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'json',
-                    success: function(result) {
+                    success: function (result) {
                         if (result.status == 'ok') {
                             if (result.max_avail_qty == 0) {
                                 $('#booking_button').attr('disabled', true);
@@ -225,7 +225,7 @@ $(document).ready(function() {
                                 html += '</tr>';
                                 html += '</thead>';
                                 html += '<tbody>';
-                                $(result.dateRangesBookingInfo).each(function(key, rangeInfo) {
+                                $(result.dateRangesBookingInfo).each(function (key, rangeInfo) {
                                     html += '<tr>';
                                     html += '<td>';
                                     html += rangeInfo.date_from + ' &nbsp;' + To_txt + ' &nbsp;' + rangeInfo.date_to;
@@ -242,7 +242,7 @@ $(document).ready(function() {
                         }
                         if (result.errors != 'undefined') {
                             var errorHtml = '';
-                            $(result.errors).each(function(key, error) {
+                            $(result.errors).each(function (key, error) {
                                 errorHtml += error + '</br>';
                             });
                             if (errorHtml != '') {
@@ -254,7 +254,7 @@ $(document).ready(function() {
                     }
                 });
             },
-            beforeShowDay: function(date) {
+            beforeShowDay: function (date) {
                 var currentMonth = date.getMonth() + 1;
                 var currentDate = date.getDate();
                 if (currentMonth < 10) {
@@ -267,7 +267,7 @@ $(document).ready(function() {
                 dateToWork = date.getFullYear() + "-" + currentMonth + "-" + currentDate;
                 if ($('.booking_date_from').val()) {
                     var dateFromVal = $('.booking_date_from').val().split("-");
-                    var dateFromVal = (dateFromVal[2]) + '-' + (dateFromVal[1]) + '-' + (dateFromVal[0]);
+                    var dateFromVal = (dateFromVal[2]) + '-' + (dateFromVal[0]) + '-' + (dateFromVal[1]);
                     if (dateToWork == dateFromVal) {
                         dateClass = 'selectedCheckedDate';
                     }
@@ -290,9 +290,9 @@ $(document).ready(function() {
         $(".booking_date_to").datepicker({
             firstDay: wk_monday_first_day_week,
             showOtherMonths: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: available_after,
-            beforeShowDay: function(date) {
+            beforeShowDay: function (date) {
                 var currentMonth = date.getMonth() + 1;
                 var currentDate = date.getDate();
                 if (currentMonth < 10) {
@@ -305,7 +305,7 @@ $(document).ready(function() {
                 dateToWork = date.getFullYear() + "-" + currentMonth + "-" + currentDate;
                 if ($('.booking_date_to').val()) {
                     var dateToVal = $('.booking_date_to').val().split("-");
-                    var dateToVal = (dateToVal[2]) + '-' + (dateToVal[1]) + '-' + (dateToVal[0]);
+                    var dateToVal = (dateToVal[2]) + '-' + (dateToVal[0]) + '-' + (dateToVal[1]);
                     if (dateToWork == dateToVal) {
                         dateClass = 'selectedCheckedDate';
                     }
@@ -323,11 +323,11 @@ $(document).ready(function() {
                 }
                 return [true, dateClass];
             },
-            beforeShow: function(input, instance) {
+            beforeShow: function (input, instance) {
                 $(".booking_date_from").removeClass('hasDatepicker');
                 var minDateTo = $('.booking_date_from').val();
                 var date_format = minDateTo.split("-");
-                var minDateTo = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[1] - 1, date_format[0])));
+                var minDateTo = new Date($.datepicker.formatDate('yy-mm-dd', new Date(date_format[2], date_format[0] - 1, date_format[1])));
                 if (considerDateToConfiguration == 0) {
                     minDateTo.setDate(minDateTo.getDate() + 1);
                 } else {
@@ -335,8 +335,8 @@ $(document).ready(function() {
                 }
                 $(".booking_date_to").datepicker("option", "minDate", minDateTo);
             },
-            onSelect: function(selectedDate) {
-                var selectedDate = new Date($.datepicker.formatDate('dd-mm-yy', new Date(selectedDate)));
+            onSelect: function (selectedDate) {
+                var selectedDate = new Date($.datepicker.formatDate('mm-dd-yy', new Date(selectedDate)));
                 if (considerDateToConfiguration == 0) {
                     selectedDate.setDate(selectedDate.getDate() - 1);
                 }
@@ -353,7 +353,7 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'json',
-                    success: function(result) {
+                    success: function (result) {
                         if (result.status == 'ok') {
                             if (result.max_avail_qty == 0) {
                                 $('.unavailable_slot_err').show();
@@ -377,7 +377,7 @@ $(document).ready(function() {
                                 html += '</tr>';
                                 html += '</thead>';
                                 html += '<tbody>';
-                                $(result.dateRangesBookingInfo).each(function(key, rangeInfo) {
+                                $(result.dateRangesBookingInfo).each(function (key, rangeInfo) {
                                     html += '<tr>';
                                     html += '<td>';
                                     html += rangeInfo.date_from + ' &nbsp;' + To_txt + ' &nbsp;' + rangeInfo.date_to;
@@ -394,7 +394,7 @@ $(document).ready(function() {
                         }
                         if (result.errors != 'undefined') {
                             var errorHtml = '';
-                            $(result.errors).each(function(key, error) {
+                            $(result.errors).each(function (key, error) {
                                 errorHtml += error + '</br>';
                             });
                             if (errorHtml != '') {
@@ -409,14 +409,14 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on("focus", ".booking_time_slot_date", function() {
+    $(document).on("focus", ".booking_time_slot_date", function () {
         var selectedJsonDates = selectedDatesJson;
         $(".booking_time_slot_date").datepicker({
             firstDay: wk_monday_first_day_week,
             showOtherMonths: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'mm-dd-yy',
             minDate: available_after,
-            beforeShowDay: function(date) {
+            beforeShowDay: function (date) {
                 var currentMonth = date.getMonth() + 1;
                 var currentDate = date.getDate();
                 if (currentMonth < 10) {
@@ -429,7 +429,7 @@ $(document).ready(function() {
                 dateToWork = date.getFullYear() + "-" + currentMonth + "-" + currentDate;
                 if ($('.booking_time_slot_date').val()) {
                     var dateVal = $('.booking_time_slot_date').val().split("-");
-                    var dateVal = (dateVal[2]) + '-' + (dateVal[1]) + '-' + (dateVal[0]);
+                    var dateVal = (dateVal[2]) + '-' + (dateVal[0]) + '-' + (dateVal[1]);
                     if (dateToWork == dateVal) {
                         dateClass = 'selectedCheckedDate';
                     }
@@ -465,7 +465,7 @@ $(document).ready(function() {
                 }
             },
             //for calender Css
-            onSelect: function(selectedDate) {
+            onSelect: function (selectedDate) {
                 $.ajax({
                     url: wkBookingCartLink,
                     data: {
@@ -477,12 +477,12 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'json',
-                    success: function(result) {
+                    success: function (result) {
                         if (result.status == 'ok') {
                             var bookingTimeSlots = result.bookingTimeSlots;
                             var html = '';
                             if (bookingTimeSlots != 'empty') {
-                                $.each(bookingTimeSlots, function(index, slot) {
+                                $.each(bookingTimeSlots, function (index, slot) {
                                     html += '<div class="time_slot_checkbox row">';
                                     html += '<label class="col-sm-4 form-control-static">';
                                     html += '<input type="checkbox" id="slot_checkbox_' + slot.id + '"';
@@ -493,7 +493,7 @@ $(document).ready(function() {
                                         html += ' checked="checked" ';
                                     }
                                     html += ' value="' + slot.id + '" class="product_blooking_time_slot">&nbsp;&nbsp;&nbsp';
-                                    html += '<span class="time_slot_price">' + slot.formated_slot_price + '&nbsp;</span>&nbsp;&nbsp;'+for_txt+'&nbsp;&nbsp;';
+                                    html += '<span class="time_slot_price">' + slot.formated_slot_price + '&nbsp;</span>&nbsp;&nbsp;' + for_txt + '&nbsp;&nbsp;';
                                     html += '<span class="time_slot_range">' + slot.time_slot_from + ' &nbsp;-&nbsp;' + slot.time_slot_to + '</span>';
                                     html += '</label>';
                                     if (slot.available_qty) {
@@ -525,7 +525,7 @@ $(document).ready(function() {
                         }
                         if (result.errors != 'undefined') {
                             var errorHtml = '';
-                            $(result.errors).each(function(key, error) {
+                            $(result.errors).each(function (key, error) {
                                 errorHtml += error + '</br>';
                             });
                             if (errorHtml != '') {
@@ -540,14 +540,14 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('click', '.product_blooking_time_slot', function() {
+    $(document).on('click', '.product_blooking_time_slot', function () {
         var selectedSlots = new Array();
         var checkedSlots = parseInt($('.product_blooking_time_slot:checked').length);
         if (checkedSlots < 1) {
-            $.growl.error({title: '', message: booking_one_slot_select_msg});
+            $.growl.error({ title: '', message: booking_one_slot_select_msg });
             return false;
         }
-        $('.product_blooking_time_slot:checked').each(function() {
+        $('.product_blooking_time_slot:checked').each(function () {
             selectedSlots.push({
                 id_slot: $(this).val(),
                 quantity: $(this).closest('.time_slot_checkbox').find('.booking_time_slots_quantity_wanted').val(),
@@ -564,13 +564,13 @@ $(document).ready(function() {
             },
             method: 'POST',
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 if (result.status == 'ok') {
                     $('.booking_total_price').text(result.productPrice);
                 }
                 if (result.errors != 'undefined') {
                     var errorHtml = '';
-                    $(result.errors).each(function(key, error) {
+                    $(result.errors).each(function (key, error) {
                         errorHtml += error + '</br>';
                     });
                     if (errorHtml != '') {
@@ -583,7 +583,7 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('blur', '.booking_time_slots_quantity_wanted', function() {
+    $(document).on('blur', '.booking_time_slots_quantity_wanted', function () {
         var selectedSlots = new Array();
         var slot_max_avail_qty = $(this).closest('.time_slot_checkbox').find('.slot_max_avail_qty').val();
         var qty_wanted = $(this).val();
@@ -595,7 +595,7 @@ $(document).ready(function() {
         if (parseInt(qty_wanted) < 1 || parseInt(qty_wanted) > slot_max_avail_qty) {
             $(this).val(slot_max_avail_qty);
         }
-        $('.product_blooking_time_slot:checked').each(function() {
+        $('.product_blooking_time_slot:checked').each(function () {
             selectedSlots.push({
                 id_slot: $(this).val(),
                 quantity: $(this).closest('.time_slot_checkbox').find('.booking_time_slots_quantity_wanted').val(),
@@ -612,13 +612,13 @@ $(document).ready(function() {
             },
             method: 'POST',
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 if (result.status == 'ok') {
                     $('.booking_total_price').text(result.productPrice);
                 }
                 if (result.errors != 'undefined') {
                     var errorHtml = '';
-                    $(result.errors).each(function(key, error) {
+                    $(result.errors).each(function (key, error) {
                         errorHtml += error + '</br>';
                     });
                     if (errorHtml != '') {
@@ -631,7 +631,7 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('blur', '#booking_product_quantity_wanted', function() {
+    $(document).on('blur', '#booking_product_quantity_wanted', function () {
         var qty_wanted = $('#booking_product_quantity_wanted').val();
         if (qty_wanted == '' || !$.isNumeric(qty_wanted)) {
             $('#booking_product_quantity_wanted').val(1);
@@ -654,7 +654,7 @@ $(document).ready(function() {
             },
             method: 'POST',
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 if (result.status == 'ok') {
                     if (result.max_avail_qty == 0 || result.showBookings) {
                         $('.unavailable_slot_err').show();
@@ -669,7 +669,7 @@ $(document).ready(function() {
                 }
                 if (result.errors != 'undefined') {
                     var errorHtml = '';
-                    $(result.errors).each(function(key, error) {
+                    $(result.errors).each(function (key, error) {
                         errorHtml += error + '</br>';
                     });
                     if (errorHtml != '') {
@@ -682,7 +682,7 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('click', '#booking_button', function(e) {
+    $(document).on('click', '#booking_button', function (e) {
         e.preventDefault();
         $('#booking_button').attr('disabled', true);
         $(".booking_loading_img").show();
@@ -708,7 +708,7 @@ $(document).ready(function() {
                     },
                     method: 'POST',
                     dataType: 'json',
-                    success: function(result) {
+                    success: function (result) {
                         $(".booking_loading_img").hide();
                         if (result.status == 'ok') {
                             $('#booking_button').attr('disabled', false);
@@ -718,50 +718,50 @@ $(document).ready(function() {
                             $('#booking_product_interface').html('');
                             $('#added_product_div').show();
                             var html = '';
-                            $.each(result.products, function(key, booking_product) {
+                            $.each(result.products, function (key, booking_product) {
                                 html += '<tr>';
-                                    html += '<td>';
-                                        html += booking_product.p_name;
-                                    html += '</td>';
-                                    html += '<td>';
-                                        if (booking_product.type == wk_type_date_range || booking_product.type == wk_type_rental) {
-                                            html += booking_product.date_from + ' &nbsp;' + To_txt + ' &nbsp;' + booking_product.date_to;
-                                        }
-                                        if (booking_product.type == wk_type_time_slot) {
-                                            html += booking_product.date_from + ' &nbsp; &nbsp;' + booking_product.slot_from + '-' + booking_product.slot_to;
-                                        }
-                                        if (booking_product.type == wk_type_event) {
-                                            html += booking_product.date_from + ' &nbsp;';
-                                            if (booking_product.slot_from != '00:00') {
-                                                html += booking_product.slot_from + ' &nbsp;';
-                                            }
-                                            if (booking_product.date_to != '0000-00-00 00:00:00') {
-                                                html += To_txt + ' &nbsp;' + booking_product.date_to + ' &nbsp;';
-                                            }
-                                            if (booking_product.slot_to != '00:00') {
-                                                html += booking_product.slot_to + ' &nbsp;';
-                                            }
+                                html += '<td>';
+                                html += booking_product.p_name;
+                                html += '</td>';
+                                html += '<td>';
+                                if (booking_product.type == wk_type_date_range || booking_product.type == wk_type_rental) {
+                                    html += booking_product.date_from + ' &nbsp;' + To_txt + ' &nbsp;' + booking_product.date_to;
+                                }
+                                if (booking_product.type == wk_type_time_slot) {
+                                    html += booking_product.date_from + ' &nbsp; &nbsp;' + booking_product.slot_from + '-' + booking_product.slot_to;
+                                }
+                                if (booking_product.type == wk_type_event) {
+                                    html += booking_product.date_from + ' &nbsp;';
+                                    if (booking_product.slot_from != '00:00') {
+                                        html += booking_product.slot_from + ' &nbsp;';
+                                    }
+                                    if (booking_product.date_to != '0000-00-00 00:00:00') {
+                                        html += To_txt + ' &nbsp;' + booking_product.date_to + ' &nbsp;';
+                                    }
+                                    if (booking_product.slot_to != '00:00') {
+                                        html += booking_product.slot_to + ' &nbsp;';
+                                    }
 
-                                        }
-                                    html += '</td>';
-                                    html += '<td>';
-                                        html += booking_product.quantity;
-                                    html += '</td>';
-                                    html += '<td>';
-                                        html += booking_product.unit_price;
-                                    html += '</td>';
-                                    html += '<td>';
-                                        html += booking_product.total_price;
-                                    html += '</td>';
-                                    html += '<td>';
-                                        html += '<a id-cart-booking="'+booking_product.id_cart_booking+'" href="#" class="remove_added_product btn btn-default"><i class="icon-trash"></i></a>';
-                                    html += '</td>';
+                                }
+                                html += '</td>';
+                                html += '<td>';
+                                html += booking_product.quantity;
+                                html += '</td>';
+                                html += '<td>';
+                                html += booking_product.unit_price;
+                                html += '</td>';
+                                html += '<td>';
+                                html += booking_product.total_price;
+                                html += '</td>';
+                                html += '<td>';
+                                html += '<a id-cart-booking="' + booking_product.id_cart_booking + '" href="#" class="remove_added_product btn btn-default"><i class="icon-trash"></i></a>';
+                                html += '</td>';
                             });
                             $('.added_product_tbody').html(html);
                         }
                         if (result.errors != 'undefined') {
                             var errorHtml = '';
-                            $(result.errors).each(function(key, error) {
+                            $(result.errors).each(function (key, error) {
                                 errorHtml += error + '</br>';
                             });
                             if (errorHtml != '') {
@@ -775,7 +775,7 @@ $(document).ready(function() {
             }
         } else if (booking_type == wk_type_time_slot || (booking_type == wk_type_event && $('.product_blooking_time_slot').length > 0)) {
             var selectedSlots = new Array();
-            $('.product_blooking_time_slot:checked').each(function() {
+            $('.product_blooking_time_slot:checked').each(function () {
                 selectedSlots.push({
                     id_slot: $(this).val(),
                     quantity: $(this).closest('.time_slot_checkbox').find('.booking_time_slots_quantity_wanted').val(),
@@ -797,7 +797,7 @@ $(document).ready(function() {
                 },
                 method: 'POST',
                 dataType: 'json',
-                success: function(result) {
+                success: function (result) {
                     $(".booking_loading_img").hide();
                     if (result.status == 'ok') {
                         $('#booking_button').attr('disabled', false);
@@ -806,37 +806,37 @@ $(document).ready(function() {
                         $('#booking_product_interface').html('');
                         $('#added_product_div').show();
                         var html = '';
-                        $.each(result.products, function(key, booking_product) {
+                        $.each(result.products, function (key, booking_product) {
                             html += '<tr>';
-                                html += '<td>';
-                                    html += booking_product.p_name;
-                                html += '</td>';
-                                html += '<td>';
-                                    if (booking_product.type == wk_type_date_range || booking_product.type == wk_type_rental) {
-                                        html += booking_product.date_from + ' &nbsp;' + To_txt + ' &nbsp;' + booking_product.date_to;
-                                    }
-                                    if (booking_product.type == wk_type_time_slot || booking_product.type == wk_type_event) {
-                                        html += booking_product.date_from + ' &nbsp; &nbsp;' + booking_product.slot_from + '-' + booking_product.slot_to;
-                                    }
-                                html += '</td>';
-                                html += '<td>';
-                                    html += booking_product.quantity;
-                                html += '</td>';
-                                html += '<td>';
-                                    html += booking_product.unit_price;
-                                html += '</td>';
-                                html += '<td>';
-                                    html += booking_product.total_price;
-                                html += '</td>';
-                                html += '<td>';
-                                    html += '<a id-cart-booking="'+booking_product.id_cart_booking+'" href="#" class="remove_added_product btn btn-default"><i class="icon-trash"></i></a>';
-                                html += '</td>';
+                            html += '<td>';
+                            html += booking_product.p_name;
+                            html += '</td>';
+                            html += '<td>';
+                            if (booking_product.type == wk_type_date_range || booking_product.type == wk_type_rental) {
+                                html += booking_product.date_from + ' &nbsp;' + To_txt + ' &nbsp;' + booking_product.date_to;
+                            }
+                            if (booking_product.type == wk_type_time_slot || booking_product.type == wk_type_event) {
+                                html += booking_product.date_from + ' &nbsp; &nbsp;' + booking_product.slot_from + '-' + booking_product.slot_to;
+                            }
+                            html += '</td>';
+                            html += '<td>';
+                            html += booking_product.quantity;
+                            html += '</td>';
+                            html += '<td>';
+                            html += booking_product.unit_price;
+                            html += '</td>';
+                            html += '<td>';
+                            html += booking_product.total_price;
+                            html += '</td>';
+                            html += '<td>';
+                            html += '<a id-cart-booking="' + booking_product.id_cart_booking + '" href="#" class="remove_added_product btn btn-default"><i class="icon-trash"></i></a>';
+                            html += '</td>';
                         });
                         $('.added_product_tbody').html(html);
                     }
                     if (result.errors != 'undefined') {
                         var errorHtml = '';
-                        $(result.errors).each(function(key, error) {
+                        $(result.errors).each(function (key, error) {
                             errorHtml += error + '</br>';
                         });
                         if (errorHtml != '') {
@@ -849,7 +849,7 @@ $(document).ready(function() {
     });
 
     //To send order link to mail to customer
-    $(document).on('click', '#js-send-process-order-email-btn', function(e) {
+    $(document).on('click', '#js-send-process-order-email-btn', function (e) {
         e.preventDefault();
         $.ajax({
             url: booking_order_url,
@@ -859,18 +859,18 @@ $(document).ready(function() {
             },
             method: 'POST',
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 if (result.errors) {
-                    $.growl.error({title: '', message: result.msg});
+                    $.growl.error({ title: '', message: result.msg });
                 } else {
-                    $.growl.notice({title: '', message: result.msg});
+                    $.growl.notice({ title: '', message: result.msg });
                 }
 
             }
         });
     });
     //To remove a row created with add new time slots buttons
-    $(document).on('click', '.remove_added_product', function(e) {
+    $(document).on('click', '.remove_added_product', function (e) {
         e.preventDefault();
         $.ajax({
             url: booking_order_url,
@@ -880,10 +880,10 @@ $(document).ready(function() {
             },
             method: 'POST',
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 if (result.status == 'ok') {
                 } else {
-                    $.growl.error({title: '', message: result.msg});
+                    $.growl.error({ title: '', message: result.msg });
                 }
             }
         });
@@ -897,20 +897,18 @@ $(document).ready(function() {
 
 });
 
-function updateAddresses()
-{
+function updateAddresses() {
     $.ajax({
-        type:"POST",
+        type: "POST",
         url: booking_order_url,
         async: true,
         dataType: "json",
-        data : {
+        data: {
             ajax: "1",
             action: "updateAddresses",
             id_address_delivery: $('#id_address_delivery option:selected').val(),
         },
-        success : function(res)
-        {
+        success: function (res) {
             $('#address_delivery_detail').html(res.formated_address);
         }
     });
