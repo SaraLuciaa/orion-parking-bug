@@ -54,7 +54,7 @@
               <div class="input-group">
                   <input type="hidden" id="product_page_product_id" value="{$idProduct|escape:'htmlall':'UTF-8'}">
                   <input type="hidden" id="product_page_product_attribute_id" value="{$idProductAtrribute|escape:'htmlall':'UTF-8'}">
-                  <input id="booking_date_from" autocomplete="off" readonly="true" placeholder="{l s='Book From' mod='psbooking'}" type="text" class="text booking_date_from" value="{if isset($date_from)}{$date_from|escape:'htmlall':'UTF-8'}{/if}">
+                  <input id="booking_date_from" autocomplete="off" readonly="true" placeholder="{l s='Book From' mod='psbooking'}" type="text" class="text booking_date_from" value="{if isset($date_from) && $date_from}{date('m-d-Y', strtotime($date_from))|escape:'htmlall':'UTF-8'}{/if}">
                   <span class="input-group-addon">
                       <i class="icon-calendar"></i>
                   </span>
@@ -70,7 +70,7 @@
           <div class="col-lg-8">
             <div class="row">
               <div class="input-group">
-                  <input id="booking_date_to" autocomplete="off" readonly="true" placeholder="{l s='Book To' mod='psbooking'}" type="text" class="text booking_date_to" value="{if isset($date_to)}{$date_to|escape:'htmlall':'UTF-8'}{/if}">
+                  <input id="booking_date_to" autocomplete="off" readonly="true" placeholder="{l s='Book To' mod='psbooking'}" type="text" class="text booking_date_to" value="{if isset($date_to) && $date_to}{date('m-d-Y', strtotime($date_to))|escape:'htmlall':'UTF-8'}{/if}">
                   <span class="input-group-addon">
                       <i class="icon-calendar"></i>
                   </span>
@@ -129,7 +129,7 @@
             <div class="row">
               <div class="input-group">
                 <input type="hidden" id="product_page_product_id" value="{$idProduct|escape:'htmlall':'UTF-8'}">
-                <input id="booking_time_slot_date" autocomplete="off" readonly="true" placeholder="{l s='Book From' mod='psbooking'}" type="text" class="text booking_time_slot_date" value="{if isset($date_from)}{$date_from|escape:'htmlall':'UTF-8'}{/if}">
+                <input id="booking_time_slot_date" autocomplete="off" readonly="true" placeholder="{l s='Book From' mod='psbooking'}" type="text" class="text booking_time_slot_date" value="{if isset($date_from) && $date_from}{date('m-d-Y', strtotime($date_from))|escape:'htmlall':'UTF-8'}{/if}">
                 <span class="input-group-addon">
                     <i class="icon-calendar"></i>
                 </span>

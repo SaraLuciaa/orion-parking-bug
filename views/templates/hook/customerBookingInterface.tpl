@@ -55,7 +55,7 @@
             <div class="col-lg-6 col-md-12">
               <span>{l s='From' mod='psbooking'}</span>
               <div class="input-group">
-                <input id="booking_date_from" autocomplete="off" class="booking_date_from form-control" type="text" readonly="true" placeholder="{l s='Book From' mod='psbooking'}" value="{if isset($date_from)}{$date_from|escape:'htmlall':'UTF-8'}{/if}">
+                <input id="booking_date_from" autocomplete="off" class="booking_date_from form-control" type="text" readonly="true" placeholder="{l s='Book From' mod='psbooking'}" value="{if isset($date_from) && $date_from}{date('m-d-Y', strtotime($date_from))|escape:'htmlall':'UTF-8'}{/if}">
                 <span class="input-group-addon">
                   <i class="material-icons">date_range</i>
                 </span>
@@ -64,7 +64,7 @@
             <div class="col-lg-6 col-md-12">
               {l s='To' mod='psbooking'}
               <div class="input-group">
-                <input id="booking_date_to" autocomplete="off" class="booking_date_to form-control" type="text" readonly="true" placeholder="{l s='Book To' mod='psbooking'}" value="{if isset($date_to)}{$date_to|escape:'htmlall':'UTF-8'}{/if}">
+                <input id="booking_date_to" autocomplete="off" class="booking_date_to form-control" type="text" readonly="true" placeholder="{l s='Book To' mod='psbooking'}" value="{if isset($date_to) && $date_to}{date('m-d-Y', strtotime($date_to))|escape:'htmlall':'UTF-8'}{/if}">
                 <span class="input-group-addon">
                   <i class="material-icons">date_range</i>
                 </span>
@@ -90,7 +90,7 @@
           <div class="form-group row">
             <div class="col-md-6">
               <div class="input-group">
-                <input id="booking_time_slot_date" autocomplete="off" class="booking_time_slot_date form-control" type="text" readonly="true" placeholder="Book From" value="{if isset($date_from)}{$date_from|escape:'htmlall':'UTF-8'}{/if}">
+                <input id="booking_time_slot_date" autocomplete="off" class="booking_time_slot_date form-control" type="text" readonly="true" placeholder="Book From" value="{if isset($date_from) && $date_from}{date('m-d-Y', strtotime($date_from))|escape:'htmlall':'UTF-8'}{/if}">
                 <span class="input-group-addon">
                   <i class="material-icons">date_range</i>
                 </span>

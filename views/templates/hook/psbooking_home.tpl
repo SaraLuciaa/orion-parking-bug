@@ -40,13 +40,13 @@
                 <div class="col-md-4 form-group">
                     <label>{l s='From' mod='psbooking'}</label>
                     <div>
-                        <input id="search_date_from" type="text" class="form-control datepicker-input" autocomplete="off" placeholder="{l s='From' mod='psbooking'}" name="date_from" readonly value="{if isset($date_from)}{$date_from|escape:'htmlall':'UTF-8'}{/if}">
+                        <input id="search_date_from" type="text" class="form-control datepicker-input" autocomplete="off" placeholder="{l s='From' mod='psbooking'}" name="date_from" readonly value="{if isset($date_from) && $date_from}{date('m-d-Y', strtotime($date_from))|escape:'htmlall':'UTF-8'}{/if}">
                     </div>
                 </div>
                 <div class="col-md-4 form-group">
                     <label>{l s='To' mod='psbooking'}</label>
                     <div>
-                        <input id="search_date_to" type="text" class="form-control datepicker-input" autocomplete="off" placeholder="{l s='To' mod='psbooking'}" name="date_to" readonly value="{if isset($date_to)}{$date_to|escape:'htmlall':'UTF-8'}{/if}">
+                        <input id="search_date_to" type="text" class="form-control datepicker-input" autocomplete="off" placeholder="{l s='To' mod='psbooking'}" name="date_to" readonly value="{if isset($date_to) && $date_to}{date('m-d-Y', strtotime($date_to))|escape:'htmlall':'UTF-8'}{/if}">
                     </div>
                 </div>    
                 <!--<div class="col-md-2 form-group">
